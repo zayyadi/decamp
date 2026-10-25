@@ -1,0 +1,21 @@
+{
+  "id": "group-04-sokoto-unnamed",
+  "article": {
+    "title": "Four Sokoto reps leave PDP",
+    "outlet": "Example Times",
+    "url": "https://example.org/group-04-sokoto-unnamed",
+    "published_at": "2026-08-12",
+    "tier": 1,
+    "text": "Four members of the House of Representatives from Sokoto State, led by Hon. Nuhu Ali Tureta, on Monday defected from the Peoples Democratic Party to the All Progressives Congress. The others were not named. Tureta said: \"We have collectively resolved to join the APC.\""
+  },
+  "expected": {
+    "classification": "GROUP_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Nuhu Ali Tureta",
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

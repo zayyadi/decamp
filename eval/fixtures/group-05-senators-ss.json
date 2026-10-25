@@ -1,0 +1,31 @@
+{
+  "id": "group-05-senators-ss",
+  "article": {
+    "title": "Three senators defect to APC at plenary",
+    "outlet": "Daily Example",
+    "url": "https://example.org/group-05-senators-ss",
+    "published_at": "2026-04-29",
+    "tier": 1,
+    "text": "Three senators from the South, Senator Tonye Ebiere-Dappa (Bayelsa Demo District 1), Senator Chinedu Okoroafor-Eze (Imo Demo District 1) and Senator Ifiok Udoaka-Essien (Akwa Ibom Demo District 1), on Tuesday defected from the Peoples Democratic Party to the All Progressives Congress. The Senate President read their letters during plenary."
+  },
+  "expected": {
+    "classification": "GROUP_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Tonye Ebiere-Dappa",
+        "from": "PDP",
+        "to": "APC"
+      },
+      {
+        "roster_id": "Chinedu Okoroafor-Eze",
+        "from": "PDP",
+        "to": "APC"
+      },
+      {
+        "roster_id": "Ifiok Udoaka-Essien",
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "intent-09-on-behalf",
+  "article": {
+    "title": "Tukur's supporters join APC on her behalf",
+    "outlet": "Example Times",
+    "url": "https://example.org/intent-09-on-behalf",
+    "published_at": "2026-10-17",
+    "tier": 1,
+    "text": "Supporters of Senator Aisha Garba Tukur on Friday registered with the All Progressives Congress in Yola, saying they were doing so on behalf of the senator. Tukur, who was in Abuja, has not commented, and she remains a member of the Peoples Democratic Party."
+  },
+  "expected": {
+    "classification": "INTENT_OR_RUMOUR",
+    "legislators": []
+  }
+}

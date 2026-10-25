@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-09-rep-tunde",
+  "article": {
+    "title": "Ogun rep joins APC",
+    "outlet": "Daily Example",
+    "url": "https://example.org/confirmed-09-rep-tunde",
+    "published_at": "2026-09-02",
+    "tier": 1,
+    "text": "The member representing Ogun Demo Constituency 1 in the House of Representatives, Hon. Wale Ogunleye-Banjo, has joined the All Progressives Congress. Ogunleye-Banjo, who was elected on the platform of the Peoples Democratic Party, said on Monday: \"I have formally joined the APC today and I urge my supporters to follow me.\""
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Adewale Ogunleye-Banjo",
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

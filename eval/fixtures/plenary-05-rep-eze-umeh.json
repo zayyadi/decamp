@@ -1,0 +1,21 @@
+{
+  "id": "plenary-05-rep-eze-umeh",
+  "article": {
+    "title": "Letter from Eze-Umeh read in House",
+    "outlet": "Daily Example",
+    "url": "https://example.org/plenary-05-rep-eze-umeh",
+    "published_at": "2026-02-11",
+    "tier": 1,
+    "text": "The Deputy Speaker, who presided over Tuesday's plenary, read a letter from Hon. Nkechi Eze-Umeh (Enugu Demo Constituency 1) announcing her defection from the Labour Party to the Peoples Democratic Party. Members of the minority caucus protested the announcement."
+  },
+  "expected": {
+    "classification": "FORMAL_PLENARY_ANNOUNCEMENT",
+    "legislators": [
+      {
+        "roster_id": "Nkechi Eze-Umeh",
+        "from": "LP",
+        "to": "PDP"
+      }
+    ]
+  }
+}

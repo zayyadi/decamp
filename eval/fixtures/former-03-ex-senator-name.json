@@ -1,0 +1,15 @@
+{
+  "id": "former-03-ex-senator-name",
+  "article": {
+    "title": "Ocheja-Fictional moves to ADC",
+    "outlet": "Example Business",
+    "url": "https://example.org/former-03-ex-senator-name",
+    "published_at": "2026-03-31",
+    "tier": 2,
+    "text": "Former senator Idris Ocheja-Fictional, who left the Senate in 2019, on Monday collected his membership card of the African Democratic Congress in Lokoja."
+  },
+  "expected": {
+    "classification": "FORMER_LEGISLATOR",
+    "legislators": []
+  }
+}

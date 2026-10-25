@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-14-akwanga-variant",
+  "article": {
+    "title": "Nasarawa rep Uthman Akwanga joins PDP",
+    "outlet": "Daily Example",
+    "url": "https://example.org/confirmed-14-akwanga-variant",
+    "published_at": "2026-03-03",
+    "tier": 1,
+    "text": "Hon. Uthman Muhammad Akwanga, representing Nasarawa Demo Constituency 1 in the House of Representatives, on Monday joined the Peoples Democratic Party at his ward in Akwanga. \"I have decamped from the APC to the PDP,\" Akwanga told supporters."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Usman Mohammed Akwanga",
+        "from": "APC",
+        "to": "PDP"
+      }
+    ]
+  }
+}

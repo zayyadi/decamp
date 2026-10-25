@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-06-kwaru-variant",
+  "article": {
+    "title": "Kwaru leaves APC, joins SDP",
+    "outlet": "Example Times",
+    "url": "https://example.org/confirmed-06-kwaru-variant",
+    "published_at": "2026-04-14",
+    "tier": 1,
+    "text": "Senator Yusuff Abdul Rahman Kwaru, representing Kaduna Demo District 1, has left the All Progressives Congress and joined the Social Democratic Party. Kwaru told journalists in Kaduna on Monday: \"I have submitted my resignation letter to my ward and I am now a member of the SDP.\""
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Yusuf Abdulrahman Kwaru",
+        "from": "APC",
+        "to": "SDP"
+      }
+    ]
+  }
+}

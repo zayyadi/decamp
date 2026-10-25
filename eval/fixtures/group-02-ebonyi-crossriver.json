@@ -1,0 +1,26 @@
+{
+  "id": "group-02-ebonyi-crossriver",
+  "article": {
+    "title": "Two PDP reps join APC in Abakaliki",
+    "outlet": "Example Times",
+    "url": "https://example.org/group-02-ebonyi-crossriver",
+    "published_at": "2026-06-17",
+    "tier": 1,
+    "text": "Two members of the House of Representatives, Hon. Chidi Ogbonna-Ike (Ebonyi Demo Constituency 2) and Hon. Mercy Odey-Agbor (Cross River Demo Constituency 1), on Monday left the Peoples Democratic Party and joined the All Progressives Congress at a rally in Abakaliki. Both collected APC membership cards from the national chairman."
+  },
+  "expected": {
+    "classification": "GROUP_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Chidi Ogbonna-Ike",
+        "from": "PDP",
+        "to": "APC"
+      },
+      {
+        "roster_id": "Mercy Odey-Agbor",
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

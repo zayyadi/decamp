@@ -1,0 +1,15 @@
+{
+  "id": "nonleg-01-governor",
+  "article": {
+    "title": "Governor Fadipe-Fictional joins APC",
+    "outlet": "Daily Example",
+    "url": "https://example.org/nonleg-01-governor",
+    "published_at": "2026-06-11",
+    "tier": 1,
+    "text": "Governor Ayo Fadipe-Fictional on Thursday defected to the All Progressives Congress alongside his commissioners. Several federal lawmakers from the state are expected to follow suit in the coming weeks."
+  },
+  "expected": {
+    "classification": "NON_LEGISLATOR_DEFECTION",
+    "legislators": []
+  }
+}

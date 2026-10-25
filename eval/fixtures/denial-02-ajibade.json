@@ -1,0 +1,15 @@
+{
+  "id": "denial-02-ajibade",
+  "article": {
+    "title": "I remain in APC, says Ajibade-Coker",
+    "outlet": "Example Times",
+    "url": "https://example.org/denial-02-ajibade",
+    "published_at": "2026-05-02",
+    "tier": 1,
+    "text": "Senator Seun Ajibade-Coker of Lagos Demo District 1 has denied reports that he has defected to the Peoples Democratic Party. \"I am a loyal member of the APC and I have no plans to leave,\" he said in a statement on Friday."
+  },
+  "expected": {
+    "classification": "DENIAL",
+    "legislators": []
+  }
+}

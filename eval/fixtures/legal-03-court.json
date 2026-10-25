@@ -1,0 +1,15 @@
+{
+  "id": "legal-03-court",
+  "article": {
+    "title": "Court fixes date for suit against Gidado",
+    "outlet": "Daily Example",
+    "url": "https://example.org/legal-03-court",
+    "published_at": "2026-06-20",
+    "tier": 1,
+    "text": "A Federal High Court in Abuja has fixed July 15 for hearing in the suit seeking to sack Senator Muhammad Lawan Gidado over his defection from the APC to the PDP."
+  },
+  "expected": {
+    "classification": "LEGAL_CHALLENGE",
+    "legislators": []
+  }
+}

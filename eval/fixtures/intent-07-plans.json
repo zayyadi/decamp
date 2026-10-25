@@ -1,0 +1,15 @@
+{
+  "id": "intent-07-plans",
+  "article": {
+    "title": "Iorkyaa-Agbo plans move to ADC",
+    "outlet": "Example Times",
+    "url": "https://example.org/intent-07-plans",
+    "published_at": "2026-02-18",
+    "tier": 1,
+    "text": "Senator Terver Iorkyaa-Agbo, representing Benue Demo District 1, plans to leave the All Progressives Congress for the African Democratic Congress, according to a close associate. \"He is consulting widely and will announce his decision after the consultations,\" the associate said."
+  },
+  "expected": {
+    "classification": "INTENT_OR_RUMOUR",
+    "legislators": []
+  }
+}

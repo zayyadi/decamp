@@ -1,0 +1,15 @@
+{
+  "id": "intent-01-dogo",
+  "article": {
+    "title": "Dogo-Fictional set to dump LP",
+    "outlet": "Daily Example",
+    "url": "https://example.org/intent-01-dogo",
+    "published_at": "2026-08-02",
+    "tier": 1,
+    "text": "Strong indications emerged on Sunday that Senator Halima Dogo-Fictional is set to dump the Labour Party for the African Democratic Congress. Sources close to the senator said consultations with stakeholders are ongoing and a decision is expected soon."
+  },
+  "expected": {
+    "classification": "INTENT_OR_RUMOUR",
+    "legislators": []
+  }
+}

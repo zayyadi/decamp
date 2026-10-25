@@ -1,0 +1,15 @@
+{
+  "id": "former-02-ex-rep",
+  "article": {
+    "title": "Former rep dumps APC",
+    "outlet": "Example Times",
+    "url": "https://example.org/former-02-ex-rep",
+    "published_at": "2026-08-31",
+    "tier": 1,
+    "text": "A former member of the House of Representatives, Hon. Bayo Lawal-Fictional, who served between 2011 and 2015, has dumped the All Progressives Congress for the Peoples Democratic Party."
+  },
+  "expected": {
+    "classification": "FORMER_LEGISLATOR",
+    "legislators": []
+  }
+}

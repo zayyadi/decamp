@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-03-dandume-variant",
+  "article": {
+    "title": "Kano senator Suleiman Dandume defects to APC",
+    "outlet": "Example Times",
+    "url": "https://example.org/confirmed-03-dandume-variant",
+    "published_at": "2026-06-03",
+    "tier": 1,
+    "text": "Senator Suleiman Kabir Dandume (Kano Demo District 1) on Monday defected from the New Nigeria Peoples Party to the All Progressives Congress. In a statement he signed, the lawmaker said: \"I have formally left the NNPP and joined the APC after wide consultations with my constituents.\" He was received by the state APC chairman in Kano."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Sulaiman Kabir Dandume",
+        "from": "NNPP",
+        "to": "APC"
+      }
+    ]
+  }
+}

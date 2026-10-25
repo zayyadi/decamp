@@ -1,0 +1,15 @@
+{
+  "id": "legal-01-okeyode",
+  "article": {
+    "title": "PDP sues to declare Okeyode's seat vacant",
+    "outlet": "Daily Example",
+    "url": "https://example.org/legal-01-okeyode",
+    "published_at": "2026-10-02",
+    "tier": 1,
+    "text": "The Peoples Democratic Party has approached the Federal High Court seeking an order declaring vacant the seat of Senator Barnabas Okeyode, who defected to the APC, in line with Section 68(1)(g) of the Constitution."
+  },
+  "expected": {
+    "classification": "LEGAL_CHALLENGE",
+    "legislators": []
+  }
+}

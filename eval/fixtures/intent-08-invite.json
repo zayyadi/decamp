@@ -1,0 +1,15 @@
+{
+  "id": "intent-08-invite",
+  "article": {
+    "title": "APC invites Ningi to join party",
+    "outlet": "Daily Example",
+    "url": "https://example.org/intent-08-invite",
+    "published_at": "2026-07-21",
+    "tier": 1,
+    "text": "The All Progressives Congress in Bauchi State has formally invited Hon. Danjuma Musa Ningi, the member representing Bauchi Demo Constituency 1, to join the party. Ningi, a member of the Peoples Democratic Party, said he was studying the invitation."
+  },
+  "expected": {
+    "classification": "INTENT_OR_RUMOUR",
+    "legislators": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "denial-05-gombi",
+  "article": {
+    "title": "Gombi dismisses APC defection claims",
+    "outlet": "Example Times",
+    "url": "https://example.org/denial-05-gombi",
+    "published_at": "2026-04-07",
+    "tier": 1,
+    "text": "Hon. Danladi Yahaya Gombi, representing Adamawa Demo Constituency 1, on Monday dismissed claims that he had defected from the African Democratic Congress to the APC, saying he had \"never contemplated leaving the ADC\"."
+  },
+  "expected": {
+    "classification": "DENIAL",
+    "legislators": []
+  }
+}

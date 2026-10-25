@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-05-kafinta-variant",
+  "article": {
+    "title": "Bauchi senator joins APC",
+    "outlet": "Daily Example",
+    "url": "https://example.org/confirmed-05-kafinta-variant",
+    "published_at": "2026-05-08",
+    "tier": 1,
+    "text": "Distinguished Senator Ibrahim Usman Kafinta of Bauchi Demo District 1 has joined the All Progressives Congress. Kafinta, elected on the platform of the Peoples Democratic Party, was received by party leaders at a ceremony in Bauchi on Thursday. \"I have today joined the APC,\" the senator declared."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Ibrahim Uthman Kafinta",
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

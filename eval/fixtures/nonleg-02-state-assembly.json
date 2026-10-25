@@ -1,0 +1,15 @@
+{
+  "id": "nonleg-02-state-assembly",
+  "article": {
+    "title": "Lawmaker in state assembly dumps PDP",
+    "outlet": "Example Times",
+    "url": "https://example.org/nonleg-02-state-assembly",
+    "published_at": "2026-03-10",
+    "tier": 1,
+    "text": "Hon. Musa Danbaba-Fictional, the member representing Wudil-Fictional State Constituency in the Kano State House of Assembly, has defected from the Peoples Democratic Party to the New Nigeria Peoples Party. The Speaker of the state assembly read his letter on Tuesday."
+  },
+  "expected": {
+    "classification": "NON_LEGISLATOR_DEFECTION",
+    "legislators": []
+  }
+}

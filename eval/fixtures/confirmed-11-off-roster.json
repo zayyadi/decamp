@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-11-off-roster",
+  "article": {
+    "title": "Senator Adeboye-Fictional defects to APC",
+    "outlet": "Daily Example",
+    "url": "https://example.org/confirmed-11-off-roster",
+    "published_at": "2026-07-29",
+    "tier": 1,
+    "text": "Senator Kunle Adeboye-Fictional, representing Osun Demo District 1, on Tuesday defected from the Peoples Democratic Party to the All Progressives Congress. \"I have joined the APC,\" the senator said at a rally in Osogbo."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": null,
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

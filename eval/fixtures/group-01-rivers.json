@@ -1,0 +1,31 @@
+{
+  "id": "group-01-rivers",
+  "article": {
+    "title": "Five Rivers reps defect to APC",
+    "outlet": "Daily Example",
+    "url": "https://example.org/group-01-rivers",
+    "published_at": "2026-05-21",
+    "tier": 1,
+    "text": "Five members of the House of Representatives from Rivers State on Tuesday defected from the Peoples Democratic Party to the All Progressives Congress. They include Hon. Ekpenyong Bassey-Ita, Hon. Tamuno Briggs-Fictional and Hon. Ngozi Amadi-Okafor. Their letter was read by the Speaker at plenary."
+  },
+  "expected": {
+    "classification": "GROUP_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Ekpenyong Bassey-Ita",
+        "from": "PDP",
+        "to": "APC"
+      },
+      {
+        "roster_id": "Tamuno Briggs-Fictional",
+        "from": "PDP",
+        "to": "APC"
+      },
+      {
+        "roster_id": "Ngozi Amadi-Okafor",
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

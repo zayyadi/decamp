@@ -1,0 +1,21 @@
+{
+  "id": "plenary-06-senate-omoregie",
+  "article": {
+    "title": "Edo senator's defection letter read",
+    "outlet": "Example Times",
+    "url": "https://example.org/plenary-06-senate-omoregie",
+    "published_at": "2026-09-23",
+    "tier": 1,
+    "text": "At Tuesday's plenary, the Senate President read a letter from Senator Ese Omoregie-Ighodaro of Edo Demo District 1, who announced her move from the Labour Party to the All Progressives Congress."
+  },
+  "expected": {
+    "classification": "FORMAL_PLENARY_ANNOUNCEMENT",
+    "legislators": [
+      {
+        "roster_id": "Ese Omoregie-Ighodaro",
+        "from": "LP",
+        "to": "APC"
+      }
+    ]
+  }
+}

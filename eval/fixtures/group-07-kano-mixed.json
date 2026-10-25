@@ -1,0 +1,26 @@
+{
+  "id": "group-07-kano-mixed",
+  "article": {
+    "title": "Kano lawmakers join APC; others weigh options",
+    "outlet": "Daily Example",
+    "url": "https://example.org/group-07-kano-mixed",
+    "published_at": "2026-07-01",
+    "tier": 1,
+    "text": "Hon. Abubakr Sadiq Rimaye (Kano Demo Constituency 1) and Senator Sulaiman Kabir Dandume (Kano Demo District 1) on Monday joined the All Progressives Congress from the New Nigeria Peoples Party. Both received membership cards from the national chairman. Sources said Hon. Hauwa Musa Gidan-Kwano is also considering her options."
+  },
+  "expected": {
+    "classification": "GROUP_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Abubakar Sadiq Rimaye",
+        "from": "NNPP",
+        "to": "APC"
+      },
+      {
+        "roster_id": "Sulaiman Kabir Dandume",
+        "from": "NNPP",
+        "to": "APC"
+      }
+    ]
+  }
+}

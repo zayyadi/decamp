@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-02-gidado-variant",
+  "article": {
+    "title": "Gidado dumps APC for PDP",
+    "outlet": "Daily Example",
+    "url": "https://example.org/confirmed-02-gidado-variant",
+    "published_at": "2026-08-20",
+    "tier": 1,
+    "text": "The senator representing Yobe Demo District 1, Mohammed Lawan Gidado, has dumped the All Progressives Congress for the Peoples Democratic Party. Gidado received his PDP membership card at his ward in Damaturu on Tuesday. \"From today, I am a member of the PDP,\" he said, citing the exclusion of his supporters from party structures."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Muhammad Lawan Gidado",
+        "from": "APC",
+        "to": "PDP"
+      }
+    ]
+  }
+}

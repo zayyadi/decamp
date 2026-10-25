@@ -1,0 +1,15 @@
+{
+  "id": "nonleg-04-minister",
+  "article": {
+    "title": "Former minister joins PDP",
+    "outlet": "Example Business",
+    "url": "https://example.org/nonleg-04-minister",
+    "published_at": "2026-10-09",
+    "tier": 2,
+    "text": "A former Minister of Agriculture, Dr. Femi Akintola-Fictional, has joined the Peoples Democratic Party in Ibadan. The ex-minister was received by the state chairman of the party on Wednesday."
+  },
+  "expected": {
+    "classification": "NON_LEGISLATOR_DEFECTION",
+    "legislators": []
+  }
+}

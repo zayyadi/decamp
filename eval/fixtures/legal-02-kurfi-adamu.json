@@ -1,0 +1,15 @@
+{
+  "id": "legal-02-kurfi-adamu",
+  "article": {
+    "title": "NNPP asks Speaker to declare Kurfi-Adamu's seat vacant",
+    "outlet": "Example Times",
+    "url": "https://example.org/legal-02-kurfi-adamu",
+    "published_at": "2026-07-30",
+    "tier": 1,
+    "text": "The New Nigeria Peoples Party has written to the Speaker demanding that the seat of Hon. Zainab Kurfi-Adamu be declared vacant following her defection to the All Progressives Congress, citing Section 68(1)(g) of the Constitution."
+  },
+  "expected": {
+    "classification": "LEGAL_CHALLENGE",
+    "legislators": []
+  }
+}

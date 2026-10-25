@@ -1,0 +1,15 @@
+{
+  "id": "irrelevant-03-history",
+  "article": {
+    "title": "Defections in the National Assembly: a history",
+    "outlet": "Daily Example",
+    "url": "https://example.org/irrelevant-03-history",
+    "published_at": "2026-05-27",
+    "tier": 1,
+    "text": "Defections have shaped Nigeria's National Assembly since 1999. Lawmakers have crossed between parties before every general election, and the courts have repeatedly been asked to interpret Section 68(1)(g). This analysis looks at the pattern over seven assemblies."
+  },
+  "expected": {
+    "classification": "IRRELEVANT",
+    "legislators": []
+  }
+}

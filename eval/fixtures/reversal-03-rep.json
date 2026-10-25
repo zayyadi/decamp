@@ -1,0 +1,15 @@
+{
+  "id": "reversal-03-rep",
+  "article": {
+    "title": "Mairuwa backs out of PDP move",
+    "outlet": "Daily Example",
+    "url": "https://example.org/reversal-03-rep",
+    "published_at": "2026-04-26",
+    "tier": 1,
+    "text": "Hon. Garba Lawal Mairuwa, whose defection from the APC to the PDP was announced at plenary on Tuesday, has retracted the decision. \"After further consultations, I have decided to remain in the APC,\" he said."
+  },
+  "expected": {
+    "classification": "REVERSAL",
+    "legislators": []
+  }
+}

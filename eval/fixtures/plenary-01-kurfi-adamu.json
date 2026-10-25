@@ -1,0 +1,21 @@
+{
+  "id": "plenary-01-kurfi-adamu",
+  "article": {
+    "title": "Speaker reads Kurfi-Adamu's defection letter",
+    "outlet": "Daily Example",
+    "url": "https://example.org/plenary-01-kurfi-adamu",
+    "published_at": "2026-07-09",
+    "tier": 1,
+    "text": "At Wednesday's plenary, the Speaker of the House of Representatives read a letter from Hon. Zainab Kurfi-Adamu, who represents Katsina Demo Constituency 1, announcing her defection from the New Nigeria Peoples Party to the All Progressives Congress. In the letter, she cited the crisis rocking her former party."
+  },
+  "expected": {
+    "classification": "FORMAL_PLENARY_ANNOUNCEMENT",
+    "legislators": [
+      {
+        "roster_id": "Zainab Kurfi-Adamu",
+        "from": "NNPP",
+        "to": "APC"
+      }
+    ]
+  }
+}

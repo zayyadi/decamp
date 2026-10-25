@@ -1,0 +1,15 @@
+{
+  "id": "reversal-01-okeyode",
+  "article": {
+    "title": "Okeyode rescinds decision to join APC",
+    "outlet": "Daily Example",
+    "url": "https://example.org/reversal-01-okeyode",
+    "published_at": "2026-09-25",
+    "tier": 1,
+    "text": "Senator Barnabas Okeyode has rescinded his decision to join the All Progressives Congress, ten days after he was received at a rally in Akure. \"I have rescinded my decision and remain in the PDP,\" he said in a statement on Wednesday."
+  },
+  "expected": {
+    "classification": "REVERSAL",
+    "legislators": []
+  }
+}

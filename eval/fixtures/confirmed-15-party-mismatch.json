@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-15-party-mismatch",
+  "article": {
+    "title": "Oyelaran-Bose joins ADC",
+    "outlet": "Daily Example",
+    "url": "https://example.org/confirmed-15-party-mismatch",
+    "published_at": "2026-10-20",
+    "tier": 1,
+    "text": "Senator Kehinde Oyelaran-Bose, representing Oyo Demo District 1, on Monday defected from the Peoples Democratic Party to the African Democratic Congress. \"I have joined the ADC,\" he said in Ibadan after collecting his card."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Kehinde Oyelaran-Bose",
+        "from": "PDP",
+        "to": "ADC"
+      }
+    ]
+  }
+}

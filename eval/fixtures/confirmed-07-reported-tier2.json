@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-07-reported-tier2",
+  "article": {
+    "title": "Enugu senator crosses to APC",
+    "outlet": "Example Business",
+    "url": "https://example.org/confirmed-07-reported-tier2",
+    "published_at": "2026-03-19",
+    "tier": 2,
+    "text": "Senator Emeka Obiorah-Udeh, who represents Enugu Demo District 1, has crossed over from the Labour Party to the All Progressives Congress. The senator was formally received into the APC at a rally in Enugu on Wednesday, where he was handed a membership card by the state chairman."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Emeka Obiorah-Udeh",
+        "from": "LP",
+        "to": "APC"
+      }
+    ]
+  }
+}

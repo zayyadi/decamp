@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-01-okeyode",
+  "article": {
+    "title": "Okeyode joins APC at Akure rally",
+    "outlet": "Daily Example",
+    "url": "https://example.org/confirmed-01-okeyode",
+    "published_at": "2026-09-15",
+    "tier": 1,
+    "text": "Senator Barnabas Okeyode, who represents Ondo Demo District 1, on Monday formally joined the All Progressives Congress at a rally in Akure. The senator had resigned his membership of the Peoples Democratic Party in a letter to his ward chairman last week. \"I have today joined the APC to better serve my people,\" Okeyode told the crowd. The APC national chairman presented him with a membership card."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Barnabas Okeyode",
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

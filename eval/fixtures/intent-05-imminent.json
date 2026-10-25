@@ -1,0 +1,15 @@
+{
+  "id": "intent-05-imminent",
+  "article": {
+    "title": "Imminent: Daudawa to join PDP",
+    "outlet": "Example Blog",
+    "url": "https://example.org/intent-05-imminent",
+    "published_at": "2026-09-18",
+    "tier": 3,
+    "text": "Senator Fatima Zubairu Daudawa of Kebbi Demo District 1 is expected to join the Peoples Democratic Party next week, according to sources in her camp. The defection, if it happens, would reduce the APC's majority in the Senate."
+  },
+  "expected": {
+    "classification": "INTENT_OR_RUMOUR",
+    "legislators": []
+  }
+}

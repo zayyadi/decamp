@@ -1,0 +1,21 @@
+{
+  "id": "plenary-07-rep-sakaba",
+  "article": {
+    "title": "Sakaba's defection to PDP announced",
+    "outlet": "Daily Example",
+    "url": "https://example.org/plenary-07-rep-sakaba",
+    "published_at": "2026-03-04",
+    "tier": 1,
+    "text": "The Speaker of the House of Representatives on Tuesday read a letter from Hon. Rukayya Bello Sakaba, the member representing Kebbi Demo Constituency 1, announcing her defection from the All Progressives Congress to the Peoples Democratic Party."
+  },
+  "expected": {
+    "classification": "FORMAL_PLENARY_ANNOUNCEMENT",
+    "legislators": [
+      {
+        "roster_id": "Rukayya Bello Sakaba",
+        "from": "APC",
+        "to": "PDP"
+      }
+    ]
+  }
+}

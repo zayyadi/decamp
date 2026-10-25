@@ -1,0 +1,15 @@
+{
+  "id": "irrelevant-04-defective",
+  "article": {
+    "title": "Senator decries defective road",
+    "outlet": "Example Business",
+    "url": "https://example.org/irrelevant-04-defective",
+    "published_at": "2026-04-03",
+    "tier": 2,
+    "text": "Senator Terver Iorkyaa-Agbo has called on the federal government to fix the defective Makurdi-Otukpo road. The lawmaker said the road had claimed many lives."
+  },
+  "expected": {
+    "classification": "IRRELEVANT",
+    "legislators": []
+  }
+}

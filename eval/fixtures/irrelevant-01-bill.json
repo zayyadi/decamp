@@ -1,0 +1,15 @@
+{
+  "id": "irrelevant-01-bill",
+  "article": {
+    "title": "Okeyode sponsors coastal erosion bill",
+    "outlet": "Daily Example",
+    "url": "https://example.org/irrelevant-01-bill",
+    "published_at": "2026-09-20",
+    "tier": 1,
+    "text": "Senator Barnabas Okeyode, who defected to the APC last year, on Thursday sponsored a bill on coastal erosion in the Niger Delta. The bill passed second reading."
+  },
+  "expected": {
+    "classification": "IRRELEVANT",
+    "legislators": []
+  }
+}

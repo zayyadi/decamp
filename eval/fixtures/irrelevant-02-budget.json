@@ -1,0 +1,15 @@
+{
+  "id": "irrelevant-02-budget",
+  "article": {
+    "title": "Senate passes 2027 budget",
+    "outlet": "Example Times",
+    "url": "https://example.org/irrelevant-02-budget",
+    "published_at": "2026-10-12",
+    "tier": 1,
+    "text": "The Senate on Thursday passed the 2027 Appropriation Bill after clause-by-clause consideration. The chairman of the appropriations committee said the budget prioritises security and infrastructure."
+  },
+  "expected": {
+    "classification": "IRRELEVANT",
+    "legislators": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "irrelevant-05-party-congress",
+  "article": {
+    "title": "APC holds national convention",
+    "outlet": "Example Times",
+    "url": "https://example.org/irrelevant-05-party-congress",
+    "published_at": "2026-02-04",
+    "tier": 1,
+    "text": "The All Progressives Congress on Saturday held its national convention in Abuja, electing new national officers. Senators and members of the House of Representatives attended."
+  },
+  "expected": {
+    "classification": "IRRELEVANT",
+    "legislators": []
+  }
+}

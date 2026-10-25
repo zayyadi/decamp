@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-04-femi",
+  "article": {
+    "title": "Senator Femi Adesanya-Kuti moves to ADC",
+    "outlet": "Daily Example",
+    "url": "https://example.org/confirmed-04-femi",
+    "published_at": "2026-07-11",
+    "tier": 1,
+    "text": "Senator Femi Adesanya-Kuti, representing Ogun Demo District 1, on Friday moved to the African Democratic Congress. Speaking after collecting his membership card in Abeokuta, Adesanya-Kuti said: \"I have resigned from the APC and joined the ADC, where my vision for Ogun is better served.\""
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Olufemi Adesanya-Kuti",
+        "from": "APC",
+        "to": "ADC"
+      }
+    ]
+  }
+}

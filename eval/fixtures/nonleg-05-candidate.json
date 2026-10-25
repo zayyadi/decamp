@@ -1,0 +1,15 @@
+{
+  "id": "nonleg-05-candidate",
+  "article": {
+    "title": "Senatorial candidate dumps LP for APC",
+    "outlet": "Example Blog",
+    "url": "https://example.org/nonleg-05-candidate",
+    "published_at": "2026-02-27",
+    "tier": 3,
+    "text": "The Labour Party's candidate in the last election for Enugu Demo District 1, Mr. Obiora Nnaji-Fictional, has defected to the All Progressives Congress. Nnaji-Fictional said he was impressed by the performance of the federal government."
+  },
+  "expected": {
+    "classification": "NON_LEGISLATOR_DEFECTION",
+    "legislators": []
+  }
+}

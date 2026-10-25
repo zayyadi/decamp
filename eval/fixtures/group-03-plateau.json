@@ -1,0 +1,26 @@
+{
+  "id": "group-03-plateau",
+  "article": {
+    "title": "Plateau senator, rep dump PDP and LP for ADC",
+    "outlet": "Daily Example",
+    "url": "https://example.org/group-03-plateau",
+    "published_at": "2026-03-25",
+    "tier": 1,
+    "text": "Senator Halima Dogo-Fictional (Plateau Demo District 1) and Hon. Bitrus Dalyop-Gyang (Plateau Demo Constituency 1) on Tuesday joined the African Democratic Congress at a joint rally in Jos. Dogo-Fictional left the Labour Party while Dalyop-Gyang resigned from the Peoples Democratic Party. Both collected ADC membership cards."
+  },
+  "expected": {
+    "classification": "GROUP_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Halima Dogo-Fictional",
+        "from": "LP",
+        "to": "ADC"
+      },
+      {
+        "roster_id": "Bitrus Dalyop-Gyang",
+        "from": "PDP",
+        "to": "ADC"
+      }
+    ]
+  }
+}

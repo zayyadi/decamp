@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-16-unknown-chamber",
+  "article": {
+    "title": "Bauchi lawmaker Ningi joins APC",
+    "outlet": "Example Times",
+    "url": "https://example.org/confirmed-16-unknown-chamber",
+    "published_at": "2026-09-07",
+    "tier": 1,
+    "text": "Bauchi lawmaker Danjuma Musa Ningi on Saturday joined the All Progressives Congress at a rally in Ningi town. Ningi, who was elected on the platform of the Peoples Democratic Party, said: \"I have today joined the APC with all my structures.\""
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Danjuma Musa Ningi",
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

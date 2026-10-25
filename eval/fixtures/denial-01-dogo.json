@@ -1,0 +1,15 @@
+{
+  "id": "denial-01-dogo",
+  "article": {
+    "title": "Dogo-Fictional has not left LP, says aide",
+    "outlet": "Daily Example",
+    "url": "https://example.org/denial-01-dogo",
+    "published_at": "2026-08-04",
+    "tier": 1,
+    "text": "The media aide to Senator Halima Dogo-Fictional has dismissed reports that the senator has left the Labour Party, describing them as \"the handiwork of mischief makers\". He said the senator remains committed to the party."
+  },
+  "expected": {
+    "classification": "DENIAL",
+    "legislators": []
+  }
+}

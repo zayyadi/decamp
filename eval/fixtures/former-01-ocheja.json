@@ -1,0 +1,15 @@
+{
+  "id": "former-01-ocheja",
+  "article": {
+    "title": "Ex-senator Ocheja joins SDP",
+    "outlet": "Daily Example",
+    "url": "https://example.org/former-01-ocheja",
+    "published_at": "2026-04-30",
+    "tier": 1,
+    "text": "A former senator who represented Kogi Demo District 1 between 2015 and 2019, Sen. Idris Ocheja-Fictional, has joined the Social Democratic Party. Ocheja said he was returning to active politics."
+  },
+  "expected": {
+    "classification": "FORMER_LEGISLATOR",
+    "legislators": []
+  }
+}

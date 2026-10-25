@@ -1,0 +1,15 @@
+{
+  "id": "intent-04-courtesy-visit",
+  "article": {
+    "title": "Kankara visits PDP chairman",
+    "outlet": "Example Business",
+    "url": "https://example.org/intent-04-courtesy-visit",
+    "published_at": "2026-06-08",
+    "tier": 2,
+    "text": "Senator Muhammad Bello Kankara (Katsina Demo District 1) paid a courtesy visit to the national chairman of the Peoples Democratic Party on Friday. Observers say the visit could signal an imminent defection from the All Progressives Congress, but the senator did not speak to journalists."
+  },
+  "expected": {
+    "classification": "INTENT_OR_RUMOUR",
+    "legislators": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "intent-06-attended-rally",
+  "article": {
+    "title": "Rep Iyorchia-Ameh spotted at APC rally",
+    "outlet": "Daily Example",
+    "url": "https://example.org/intent-06-attended-rally",
+    "published_at": "2026-10-03",
+    "tier": 1,
+    "text": "Hon. Grace Iyorchia-Ameh, who represents Benue Demo Constituency 1 in the House of Representatives, was on Thursday seen at a rally of the All Progressives Congress in Makurdi. Her media aide said her attendance was in her capacity as a guest and that she has not left the Labour Party."
+  },
+  "expected": {
+    "classification": "INTENT_OR_RUMOUR",
+    "legislators": []
+  }
+}

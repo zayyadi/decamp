@@ -1,0 +1,15 @@
+{
+  "id": "reversal-02-letter-withdrawn",
+  "article": {
+    "title": "Tsokwa withdraws defection letter",
+    "outlet": "Example Times",
+    "url": "https://example.org/reversal-02-letter-withdrawn",
+    "published_at": "2026-05-15",
+    "tier": 1,
+    "text": "Senator Yakubu Danladi Tsokwa has written to the Senate President withdrawing the letter in which he announced his defection to the Peoples Democratic Party. The senator said the letter was \"premature\" and that he remains in the APC."
+  },
+  "expected": {
+    "classification": "REVERSAL",
+    "legislators": []
+  }
+}

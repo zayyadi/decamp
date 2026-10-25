@@ -1,0 +1,26 @@
+{
+  "id": "group-06-delta",
+  "article": {
+    "title": "Delta reps move to APC",
+    "outlet": "Example Business",
+    "url": "https://example.org/group-06-delta",
+    "published_at": "2026-09-09",
+    "tier": 2,
+    "text": "Hon. Oghenekaro Edewor-Tobi and Hon. Efe Ovie-Akpobire, members of the House of Representatives from Delta State, have joined the All Progressives Congress. Edewor-Tobi left the Peoples Democratic Party and Ovie-Akpobire left the Labour Party; both were received at a rally in Asaba on Saturday."
+  },
+  "expected": {
+    "classification": "GROUP_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Oghenekaro Edewor-Tobi",
+        "from": "PDP",
+        "to": "APC"
+      },
+      {
+        "roster_id": "Efe Ovie-Akpobire",
+        "from": "LP",
+        "to": "APC"
+      }
+    ]
+  }
+}

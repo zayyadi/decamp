@@ -1,0 +1,15 @@
+{
+  "id": "denial-03-pindiga",
+  "article": {
+    "title": "Pindiga: I have not joined APC",
+    "outlet": "Daily Example",
+    "url": "https://example.org/denial-03-pindiga",
+    "published_at": "2026-06-24",
+    "tier": 1,
+    "text": "Hon. Lami Adamu Pindiga, the member representing Gombe Demo Constituency 1, has described as false a report that she joined the All Progressives Congress. \"I remain a member of the Peoples Democratic Party,\" she said."
+  },
+  "expected": {
+    "classification": "DENIAL",
+    "legislators": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "denial-04-oyelaran",
+  "article": {
+    "title": "Oyelaran-Bose denies defection rumour",
+    "outlet": "Example Business",
+    "url": "https://example.org/denial-04-oyelaran",
+    "published_at": "2026-09-29",
+    "tier": 2,
+    "text": "Senator Kehinde Oyelaran-Bose (Oyo Demo District 1) has denied reports that he dumped the All Progressives Congress. His spokesperson said the photographs circulating online were from a wedding, not a party rally."
+  },
+  "expected": {
+    "classification": "DENIAL",
+    "legislators": []
+  }
+}

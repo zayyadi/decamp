@@ -1,0 +1,21 @@
+{
+  "id": "plenary-04-senate-tukur",
+  "article": {
+    "title": "Tukur's defection to APC announced in Senate",
+    "outlet": "Example Business",
+    "url": "https://example.org/plenary-04-senate-tukur",
+    "published_at": "2026-10-14",
+    "tier": 2,
+    "text": "Senator Aisha Garba Tukur, representing Adamawa Demo District 1, formally defected from the Peoples Democratic Party to the All Progressives Congress on Tuesday, when the Senate President read her letter on the floor of the Senate."
+  },
+  "expected": {
+    "classification": "FORMAL_PLENARY_ANNOUNCEMENT",
+    "legislators": [
+      {
+        "roster_id": "Aisha Garba Tukur",
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

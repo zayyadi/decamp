@@ -1,0 +1,15 @@
+{
+  "id": "intent-03-supporters",
+  "article": {
+    "title": "Supporters of Rep Adebayo-Ojo defect to PDP",
+    "outlet": "Daily Example",
+    "url": "https://example.org/intent-03-supporters",
+    "published_at": "2026-05-30",
+    "tier": 1,
+    "text": "Thousands of supporters of Hon. Folake Adebayo-Ojo, the member representing Lagos Demo Constituency 1, on Saturday defected from the All Progressives Congress to the Peoples Democratic Party in Ikeja. The lawmaker was not present at the event, and her office said she remains in the APC for now."
+  },
+  "expected": {
+    "classification": "INTENT_OR_RUMOUR",
+    "legislators": []
+  }
+}

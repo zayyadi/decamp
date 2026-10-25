@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-13-gidan-kwano",
+  "article": {
+    "title": "Kano rep moves to NNPP",
+    "outlet": "Example Times",
+    "url": "https://example.org/confirmed-13-gidan-kwano",
+    "published_at": "2026-10-06",
+    "tier": 1,
+    "text": "Hon. Hauwa Musa Gidan-Kwano, member representing Kano Demo Constituency 2 in the House of Representatives, has moved to the New Nigeria Peoples Party. \"I have resigned from the APC and taken up membership of the NNPP,\" she said in a statement on Sunday."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Hauwa Musa Gidan-Kwano",
+        "from": "APC",
+        "to": "NNPP"
+      }
+    ]
+  }
+}

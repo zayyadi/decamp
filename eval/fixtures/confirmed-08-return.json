@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-08-return",
+  "article": {
+    "title": "Olanrewaju-Ade returns to Labour Party",
+    "outlet": "Daily Example",
+    "url": "https://example.org/confirmed-08-return",
+    "published_at": "2026-02-25",
+    "tier": 1,
+    "text": "Hon. Babatunde Olanrewaju-Ade, the member representing Lagos Demo Constituency 2 in the House of Representatives, has returned to the Labour Party, the platform on which he was elected, two years after joining the All Progressives Congress. \"I have come back home to the Labour Party,\" he said on Tuesday after re-registering at his ward."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Babatunde Olanrewaju-Ade",
+        "from": "APC",
+        "to": "LP"
+      }
+    ]
+  }
+}

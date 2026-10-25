@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-12-speculation-mixed",
+  "article": {
+    "title": "Udoaka-Essien joins APC; more senators may follow",
+    "outlet": "Daily Example",
+    "url": "https://example.org/confirmed-12-speculation-mixed",
+    "published_at": "2026-06-30",
+    "tier": 1,
+    "text": "Senator Ifiok Udoaka-Essien of Akwa Ibom Demo District 1 on Monday joined the All Progressives Congress. \"I have left the PDP and joined the APC,\" Udoaka-Essien said in Uyo. Party sources said two other senators from the South-South are in talks with the APC and may move before the end of the month."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Ifiok Udoaka-Essien",
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

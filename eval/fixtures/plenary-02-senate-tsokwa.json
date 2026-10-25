@@ -1,0 +1,21 @@
+{
+  "id": "plenary-02-senate-tsokwa",
+  "article": {
+    "title": "Senate President reads Tsokwa's letter",
+    "outlet": "Example Times",
+    "url": "https://example.org/plenary-02-senate-tsokwa",
+    "published_at": "2026-05-13",
+    "tier": 1,
+    "text": "The Senate President on Tuesday read a letter from Senator Yakubu Danladi Tsokwa (Niger Demo District 1) in which he announced his defection from the All Progressives Congress to the Peoples Democratic Party. The letter said the senator took the decision after consultations with his constituents."
+  },
+  "expected": {
+    "classification": "FORMAL_PLENARY_ANNOUNCEMENT",
+    "legislators": [
+      {
+        "roster_id": "Yakubu Danladi Tsokwa",
+        "from": "APC",
+        "to": "PDP"
+      }
+    ]
+  }
+}

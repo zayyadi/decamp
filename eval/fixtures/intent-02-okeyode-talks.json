@@ -1,0 +1,15 @@
+{
+  "id": "intent-02-okeyode-talks",
+  "article": {
+    "title": "Okeyode in talks with APC leaders",
+    "outlet": "Example Times",
+    "url": "https://example.org/intent-02-okeyode-talks",
+    "published_at": "2026-08-25",
+    "tier": 1,
+    "text": "Senator Barnabas Okeyode has held a closed-door meeting with leaders of the All Progressives Congress in Abuja, fuelling speculation that he may leave the Peoples Democratic Party. An aide said the senator would \"make his position known at the appropriate time\"."
+  },
+  "expected": {
+    "classification": "INTENT_OR_RUMOUR",
+    "legislators": []
+  }
+}

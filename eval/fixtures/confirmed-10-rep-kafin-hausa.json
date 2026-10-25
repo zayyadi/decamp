@@ -1,0 +1,21 @@
+{
+  "id": "confirmed-10-rep-kafin-hausa",
+  "article": {
+    "title": "Jigawa lawmaker dumps APC",
+    "outlet": "Example Times",
+    "url": "https://example.org/confirmed-10-rep-kafin-hausa",
+    "published_at": "2026-08-05",
+    "tier": 1,
+    "text": "Hon. Ahmad Tijani Kafin Hausa, who represents Jigawa Demo Constituency 1 in the House of Representatives, has dumped the All Progressives Congress for the Peoples Democratic Party. The lawmaker was received by the PDP state chairman in Dutse on Monday. \"I have officially joined the PDP,\" Kafin-Hausa said."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": "Ahmed Tijjani Kafin-Hausa",
+        "from": "APC",
+        "to": "PDP"
+      }
+    ]
+  }
+}

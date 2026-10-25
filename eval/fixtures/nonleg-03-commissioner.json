@@ -1,0 +1,15 @@
+{
+  "id": "nonleg-03-commissioner",
+  "article": {
+    "title": "Commissioner, aides join ADC",
+    "outlet": "Daily Example",
+    "url": "https://example.org/nonleg-03-commissioner",
+    "published_at": "2026-07-16",
+    "tier": 1,
+    "text": "The Commissioner for Works, Engr. Tobi Akande-Fictional, and three special advisers to the governor have joined the African Democratic Congress. Akande-Fictional said he left the All Progressives Congress because of internal crises."
+  },
+  "expected": {
+    "classification": "NON_LEGISLATOR_DEFECTION",
+    "legislators": []
+  }
+}

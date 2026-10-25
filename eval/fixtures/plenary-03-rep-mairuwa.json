@@ -1,0 +1,21 @@
+{
+  "id": "plenary-03-rep-mairuwa",
+  "article": {
+    "title": "Sokoto rep's defection letter read at plenary",
+    "outlet": "Daily Example",
+    "url": "https://example.org/plenary-03-rep-mairuwa",
+    "published_at": "2026-04-22",
+    "tier": 1,
+    "text": "The Speaker, during Tuesday's plenary, read a letter from Hon. Garba Lawal Mairuwa of Sokoto Demo Constituency 1 notifying the House of his defection from the All Progressives Congress to the Peoples Democratic Party. Mairuwa said the division within the APC in Sokoto made his continued stay untenable."
+  },
+  "expected": {
+    "classification": "FORMAL_PLENARY_ANNOUNCEMENT",
+    "legislators": [
+      {
+        "roster_id": "Garba Lawal Mairuwa",
+        "from": "APC",
+        "to": "PDP"
+      }
+    ]
+  }
+}
