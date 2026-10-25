@@ -1,6 +1,6 @@
 import "server-only";
 import { z } from "zod";
-import { createClient } from "@/lib/supabase/server";
+import { createAnonClient } from "@/lib/supabase/server";
 import { isUuid } from "./legislators";
 import { chamber, num, parseRows } from "./shared";
 
@@ -77,7 +77,7 @@ export interface EventPage {
 /** An event with its sources and alerts. A withdrawn event still has its correction alert. */
 export async function getEvent(id: string): Promise<EventPage | null> {
   if (!isUuid(id)) return null;
-  const db = await createClient();
+  const db = await createAnonClient();
   const [event, alerts] = await Promise.all([
     db.from("defection_events").select(EVENT_COLUMNS).eq("id", id).maybeSingle(),
     db.from("alerts").select("id, kind, level, title, body, created_at").eq("event_id", id).order("created_at"),
@@ -104,7 +104,7 @@ export type LegislatorEvent = z.infer<typeof legislatorEventRows>[number];
 
 /** Published defections of one legislator, newest first. */
 export async function getLegislatorEvents(legislatorId: string): Promise<LegislatorEvent[]> {
-  const db = await createClient();
+  const db = await createAnonClient();
   const result = await db
     .from("defection_events")
     .select(

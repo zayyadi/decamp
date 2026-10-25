@@ -46,3 +46,6 @@ next-env.d.ts
 
 # agent robots.txt cache (AGENT.md §2)
 /.agent-cache/
+
+# Unverified real-data research drafts (CLAUDE.md: never commit before two-person verification)
+/supabase/seed/drafts/

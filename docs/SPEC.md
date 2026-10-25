@@ -93,6 +93,10 @@ The guiding principle is **precision over speed**. A false alert costs more cred
 | Demo data (M5) | Hand-written SQL fixtures · a planner + SQL function | **`npm run seed -- --demo-events`: a deterministic planner and the service-role-only `seed_demo_events` function** | Exercises the real `publish_defection` path and alerts; fictional rows only; sources on the reserved `.invalid` domain; re-runs add nothing |
 | Realtime scope (M6) | Stream every table · alerts only · alerts + defection_events | **`alerts` and `defection_events` in the `supabase_realtime` publication; nothing else (tested)** | Matches §6.4; Realtime applies the subscriber's RLS and column grants, so anon gets published events only and never article text |
 | Live update handling (M6) | Toast on every change · toast on alerts, refresh on both | **A toast per alert INSERT; any alert or event change schedules one `router.refresh()` 300 ms later** | Every publish, review and correction writes an alert, so alerts carry the toast text; event changes without an alert (e.g. a manual SQL edit) still refresh the charts. Measured on the dev project: toast 0.4 s and charts 1.7 s after commit |
+| Admin sign-in (M7) | Magic link · email + password · OAuth | **Email + password (Supabase Auth); accounts created in the dashboard, role granted with `npm run admin -- --grant <email>`** | Magic links depend on email delivery (Supabase's default sender is rate-limited); OAuth needs provider setup. `app_metadata` is writable only by the service role, so users can't promote themselves |
+| Admin gate (M7) | Proxy only · per page · layered | **`proxy.ts` refreshes the session and redirects signed-out visitors; every admin page and action checks the admin claim (`getClaims`, JWT-verified); the SQL functions check `is_admin()` again** | The Next.js guide treats proxy checks as optimistic only; the database is the gate that can't be skipped |
+| Review actions (M7) | Edit then publish in two calls · one SQL function per decision | **`review_approve` (edits + `publish_defection` + feedback in one transaction), `review_edit`, `review_reject`, `review_merge`; reversal stays `reverse_defection`** | A refused publish rolls the edits back, so the queue never holds half-applied corrections; every decision writes `review_feedback` (AGENT.md §8) |
+| Merge semantics (M7) | Delete the duplicate · close it | **Sources move to the target; the duplicate becomes `rejected` with reason `duplicate` and a note naming the target** | Keeps the audit trail; nothing is deleted |
 | Crawl pacing (M2) | Fixed 1 req/s per host · honour `Crawl-delay` | **The larger of 1 s and the host's `Crawl-delay`** | Several outlets ask for 10–30 s; feeds change slowly, so the cost is only run time |
 
 Model IDs live in env vars (`CLASSIFIER_MODEL`, `ESCALATION_MODEL`) so they can change without code changes.
@@ -424,6 +428,7 @@ Each milestone ends in a runnable, demonstrable state. Claude Code pauses after 
 ## 11. Launch checklist
 
 - [ ] Real roster seeded, every row verified by two people and sourced
+- [ ] Supabase Auth: public sign-ups disabled, admin accounts created by hand, `npm run admin -- --list` shows only intended admins
 - [ ] Demo mode off in production (`npm run seed -- --demo-mode off`), so fictional rows and demo events are hidden
 - [ ] Eval passes: Confirmed precision ≥ 95%, recall ≥ 85%, entity accuracy ≥ 95%
 - [ ] A dry-run of the agent for 72 h, with no false Confirmed alerts

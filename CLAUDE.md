@@ -68,6 +68,7 @@ npm run seed -- --file supabase/seed/legislators.fictional.csv --fictional [--dr
 npm run seed -- --demo-mode on|off  # show/hide fictional rows (app_settings.demo_mode)
 npm run seed -- --demo-events [--dry-run]   # publish fictional demo defections (idempotent) and turn demo mode on
 npm run build-map -- <geoBoundaries-NGA-ADM1_simplified.geojson>   # rebuild public/maps/ng-states.topo.json
+npm run admin -- --grant <email> | --revoke <email> | --list    # admin role (app_metadata.role); create the user in the dashboard first
 npx supabase@latest db push --db-url "<session-pooler connection string>"   # apply migrations
 npx supabase@latest gen types typescript --project-id <ref> > lib/database.types.ts
 ```
@@ -85,9 +86,10 @@ Env vars are documented in `.env.example`. Keep it complete; it is checked in. `
 ## Layout
 
 ```
-app/                    Next.js routes (/, /legislators, /legislators/[id], /events/[id], /admin/*, /about)
+app/                    Next.js routes (/, /legislators, /legislators/[id], /events/[id], /admin/login, /admin/(console)/{review,published,runs}, /about); admin/actions.ts (server actions)
+proxy.ts                session refresh + signed-out redirect for /admin (optimistic; pages, actions and SQL re-check)
 components/             UI (charts/, map/, filters/, alerts/ (live-updates: Realtime + toasts; live-alert-feed), ui/ from shadcn); badges, section-card, site-header/footer, theme
-lib/                    env.ts (validated env), supabase clients (server, browser, service), queries/ (Zod-validated reads), realtime.ts (payload parsing, feed merge), filters.ts (URL state), format.ts, clock.ts, parties.ts (colours)
+lib/                    env.ts (validated env), supabase clients (server, browser, service), auth.ts (session DAL), review.ts (pure admin helpers), queries/ (Zod-validated reads; admin.ts uses the admin session), realtime.ts (payload parsing, feed merge), filters.ts (URL state), format.ts, clock.ts, parties.ts (colours)
 agent/
   run.ts                orchestrator + CLI flags   run-log.ts (pure: end-of-run summary + exit code)
   sources.ts            feed config + outlet tiers
@@ -99,7 +101,7 @@ agent/
   detect.ts             classify stage (store injected)   publish.ts (Supabase store, publish_defection)
 supabase/migrations/    SQL migrations (timestamped; never edit an applied one). States + parties live here
 supabase/seed/          legislators.fictional.csv, legislators.template.csv, README.md (column reference)
-scripts/                seed-roster.ts, build-map.ts, lib/ (roster-csv.ts, load-env.ts, demo-events.ts)
+scripts/                seed-roster.ts, build-map.ts, admin.ts, lib/ (roster-csv.ts, load-env.ts, demo-events.ts)
 eval/                   fixtures/, run-eval.ts, metrics.ts, cache.ts, claude-cli.ts (eval-only `claude -p` backend), .cache/ (gitignored)
 tests/                  vitest tests mirroring agent/, lib/, scripts/ (config: vitest.config.mts)
 tests/db/               SQL tests on PGlite: harness.ts, supabase-shim.sql, fixtures.ts

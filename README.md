@@ -56,3 +56,17 @@ Notes:
 - GitHub runs schedules from the default branch only, may start them several minutes late, and pauses them after 60 days without repository activity.
 - Runs never overlap: a slow run delays the next one.
 - A private repository pays for Actions minutes beyond its free allowance, and at 96 runs a day this adds up. A public repository runs free.
+
+## Admin review
+
+Editors review uncertain detections at `/admin/review`, reverse published defections at `/admin/published`, and see agent runs at `/admin/runs`.
+
+To add an editor:
+1. In the Supabase dashboard, **Authentication → Users → Add user**, with an email and password. Keep public sign-ups disabled (**Authentication → Sign In / Providers**).
+2. Grant the role. `app_metadata` is writable only with the service role, so users can't promote themselves:
+   ```powershell
+   npm run admin -- --grant editor@example.org
+   ```
+3. The editor signs in at `/admin/login`. `npm run admin -- --list` shows current admins; `--revoke` removes the role (effective at their next token refresh).
+
+Every approve, edit, reject and merge runs as one database transaction and is recorded in `review_feedback`.

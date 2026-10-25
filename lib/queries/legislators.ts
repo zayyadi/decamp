@@ -1,7 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import type { LegislatorQuery } from "@/lib/filters";
-import { createClient } from "@/lib/supabase/server";
+import { createAnonClient } from "@/lib/supabase/server";
 import { chamber, num, parseRows } from "./shared";
 
 const party = z.object({ code: z.string(), name: z.string(), color: z.string().nullable() });
@@ -27,7 +27,7 @@ const likeEscape = (s: string) => s.replace(/[\\%_]/g, (c) => `\\${c}`);
 
 /** Sitting members. 469 at most, so party sorting happens here rather than in PostgREST. */
 export async function listLegislators(q: LegislatorQuery): Promise<LegislatorRow[]> {
-  const db = await createClient();
+  const db = await createAnonClient();
   let query = db
     .from("legislators")
     .select(
@@ -83,7 +83,7 @@ export type Profile = z.infer<typeof profileRow> & { history: z.infer<typeof his
 
 export async function getLegislator(id: string): Promise<Profile | null> {
   if (!isUuid(id)) return null;
-  const db = await createClient();
+  const db = await createAnonClient();
   const [legislator, history] = await Promise.all([
     db
       .from("legislators")
