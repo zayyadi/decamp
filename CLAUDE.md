@@ -26,7 +26,7 @@ Update the tracker below when a milestone is accepted.
 | 0 | Project setup | ✅ |
 | 1 | Schema + roster seed | ✅ |
 | 2 | News ingestion | ✅ |
-| 3 | Detection agent | ◐ built; eval needs ANTHROPIC_API_KEY |
+| 3 | Detection agent | ✅ accepted on the `--llm=claude-cli` eval; repeat with `--llm=api` once a key exists |
 | 4 | Scheduling + orchestration | ☐ |
 | 5 | Dashboard UI | ☐ |
 | 6 | Realtime + alerts | ☐ |
