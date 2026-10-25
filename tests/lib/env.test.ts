@@ -3,6 +3,7 @@ import {
   getAgentEnv,
   getIngestEnv,
   getPublicEnv,
+  getRunLogEnv,
   getServerEnv,
   getServiceEnv,
 } from "@/lib/env";
@@ -97,5 +98,16 @@ describe("getAgentEnv", () => {
     expect(() =>
       getAgentEnv({ ...agentVars, CONFIDENCE_PUBLISH: "85" }),
     ).toThrow(/CONFIDENCE_PUBLISH/);
+  });
+});
+
+describe("getRunLogEnv", () => {
+  it("reads the GitHub step summary path when Actions sets it", () => {
+    expect(getRunLogEnv({ GITHUB_STEP_SUMMARY: "/tmp/summary.md" }).GITHUB_STEP_SUMMARY).toBe("/tmp/summary.md");
+  });
+
+  it("is empty locally", () => {
+    expect(getRunLogEnv({}).GITHUB_STEP_SUMMARY).toBeUndefined();
+    expect(getRunLogEnv({ GITHUB_STEP_SUMMARY: "" }).GITHUB_STEP_SUMMARY).toBeUndefined();
   });
 });

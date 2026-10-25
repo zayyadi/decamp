@@ -47,7 +47,9 @@ Orchestrator: `agent/run.ts`. Flags:
 - `--dry-run`: no database writes; prints decisions.
 - `--stage=ingest|classify|all` (default `all`; `classify` is added in Milestone 3)
 - `--since=<ISO date>`
-- `--article=<url>`: process one URL, for debugging.
+- `--article=<url>`: process one URL, for debugging. If the page can't be ingested, nothing is classified.
+
+Each stage runs even if the one before it crashed, so articles stored by earlier runs are still classified when the feeds can't be read. The run ends with a summary (`agent/run-log.ts`) in the log and, on GitHub Actions, the job's step summary. It exits 1 only if a stage crashed or no feed could be read. Failures of single feeds or articles, and reaching the LLM call budget, are listed but leave the run green. The schedule is `.github/workflows/agent.yml` (every 15 min, runs never overlap); its secrets are listed in README.md.
 
 ---
 

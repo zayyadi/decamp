@@ -1,5 +1,6 @@
+import { appendFileSync } from "node:fs";
 import { parseArgs } from "node:util";
-import { getAgentEnv, getIngestEnv } from "@/lib/env";
+import { getAgentEnv, getIngestEnv, getRunLogEnv } from "@/lib/env";
 import { createServiceClient } from "@/lib/supabase/service";
 import { loadLocalEnv } from "@/scripts/lib/load-env";
 import { anthropicLlm } from "./classify/classify";
@@ -10,6 +11,7 @@ import { buildPrefilter, buildRelevance } from "./filter";
 import { PoliteFetcher, userAgentFor } from "./ingest/http";
 import { ingestArticle, ingestFeeds, type IngestResult } from "./ingest/ingest";
 import { dryRunStore, supabaseIngestStore, type IngestStore, type RunSummary } from "./ingest/store";
+import { exitCode, formatRunLog, type RunLog } from "./run-log";
 import { articleByUrl, dryRunDetectStore, loadParties, loadRoster, supabaseDetectStore } from "./publish";
 import { sources } from "./sources";
 
@@ -94,17 +96,25 @@ async function main(): Promise<number> {
     }
   }
 
+  const startedAt = new Date();
   const db = createServiceClient();
   const realIngest = supabaseIngestStore(db);
   const ingestStore: IngestStore = dryRun ? dryRunStore(realIngest) : realIngest;
   const runId = await ingestStore.startRun();
   const summary: RunSummary = { errors: [] };
-  let exitCode = 0;
+  const stageFailures: string[] = [];
+  const fail = (stage: string, error: unknown) => {
+    stageFailures.push(stage);
+    summary.errors.push({ where: stage, message: message(error) });
+    console.error(`error  ${stage} stage: ${message(error)}`);
+  };
+  let feedsRan = false;
+  let articleOverride: PendingArticle[] | undefined;
 
-  try {
-    let articleOverride: PendingArticle[] | undefined;
-
-    if (runIngest) {
+  // A crashed stage doesn't stop the next one: articles stored by earlier runs
+  // still need classifying when today's feeds can't be read.
+  if (runIngest) {
+    try {
       const http = new PoliteFetcher({ userAgent: userAgentFor(env.AGENT_CONTACT_URL), robotsFile: ROBOTS_CACHE });
       const deps = { http, store: ingestStore, prefilter: buildPrefilter(await ingestStore.parties()), runId };
       let result: IngestResult;
@@ -115,12 +125,11 @@ async function main(): Promise<number> {
       } finally {
         http.robots.save();
       }
+      feedsRan = !values.article;
       const { feeds_ok, feeds_failed, articles_new, articles_prefiltered, errors } = result;
       Object.assign(summary, { feeds_ok, feeds_failed, articles_new, articles_prefiltered });
       summary.errors.push(...errors);
       reportIngest(result, dryRun);
-      // Some feeds failing is normal; all of them failing means something is wrong here.
-      if (!values.article && feeds_ok === 0) exitCode = 1;
 
       if (values.article && result.article) {
         // Classify the page whatever the pre-filter said: this is a debugging aid.
@@ -137,9 +146,18 @@ async function main(): Promise<number> {
           },
         ];
       }
+    } catch (error) {
+      fail("ingest", error);
     }
+  }
 
-    if (agentEnv) {
+  let models: string | undefined;
+  if (agentEnv && values.article && !articleOverride) {
+    // Without the page there is nothing to debug, and classifying every pending article instead would surprise.
+    console.log(`Not classifying: ${values.article} could not be ingested.`);
+  } else if (agentEnv) {
+    models = `${agentEnv.CLASSIFIER_MODEL} → ${agentEnv.ESCALATION_MODEL}`;
+    try {
       const parties = await loadParties(db);
       const realDetect = supabaseDetectStore(db, parties);
       const result = await detect(
@@ -165,17 +183,40 @@ async function main(): Promise<number> {
       Object.assign(summary, { llm_calls, input_tokens, output_tokens, events_created, events_published });
       summary.errors.push(...errors);
       reportDetect(result, dryRun);
+    } catch (error) {
+      fail("classify", error);
     }
-  } catch (error) {
-    // Close the run row so a crash is visible on /admin/runs.
-    summary.errors.push({ where: "run", message: message(error) });
-    await ingestStore.finishRun(runId, summary);
-    throw error;
   }
 
-  await ingestStore.finishRun(runId, summary);
-  if (runId !== null) console.log(`agent_runs.id = ${runId}`);
-  return exitCode;
+  try {
+    // Closes the run row, crash or not, so failures show on /admin/runs.
+    await ingestStore.finishRun(runId, summary);
+  } catch (error) {
+    fail("record-run", error);
+  }
+
+  const log: RunLog = {
+    stage: values.stage,
+    dryRun,
+    startedAt,
+    finishedAt: new Date(),
+    runId,
+    feedsRan,
+    models,
+    stageFailures,
+    summary,
+  };
+  const text = formatRunLog(log);
+  console.log(`\n${text}`);
+  const { GITHUB_STEP_SUMMARY } = getRunLogEnv();
+  if (GITHUB_STEP_SUMMARY) {
+    try {
+      appendFileSync(GITHUB_STEP_SUMMARY, text);
+    } catch (error) {
+      console.error(`could not write the step summary: ${message(error)}`);
+    }
+  }
+  return exitCode(log);
 }
 
 main().then(

@@ -1,0 +1,65 @@
+name: Agent
+
+# Detection agent (SPEC §3.1, M4). Secrets and variables are listed in
+# README.md under "Running the agent on GitHub Actions".
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: Stage to run
+        type: choice
+        options: [all, ingest, classify]
+        default: all
+      dry_run:
+        description: Dry run (read the database, write nothing)
+        type: boolean
+        default: true
+
+# One run at a time. Crawl delays can make a run outlast the 15-minute slot;
+# the next one then waits instead of racing it over the same articles.
+concurrency:
+  group: agent
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+
+      # robots.txt answers are kept for 24 h (AGENT.md §2). Each run saves a
+      # new cache entry and restores the latest one.
+      - uses: actions/cache@v4
+        with:
+          path: .agent-cache
+          key: agent-cache-${{ github.run_id }}
+          restore-keys: agent-cache-
+
+      - name: Run agent
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          AGENT_CONTACT_URL: ${{ vars.AGENT_CONTACT_URL }}
+          # Optional; lib/env.ts supplies the defaults when these are unset.
+          CLASSIFIER_MODEL: ${{ vars.CLASSIFIER_MODEL }}
+          ESCALATION_MODEL: ${{ vars.ESCALATION_MODEL }}
+          CONFIDENCE_PUBLISH: ${{ vars.CONFIDENCE_PUBLISH }}
+          CONFIDENCE_REVIEW: ${{ vars.CONFIDENCE_REVIEW }}
+          AGENT_LOOKBACK_HOURS: ${{ vars.AGENT_LOOKBACK_HOURS }}
+          AGENT_MAX_LLM_CALLS_PER_RUN: ${{ vars.AGENT_MAX_LLM_CALLS_PER_RUN }}
+          # Scheduled runs have no inputs: full and live.
+          STAGE: ${{ inputs.stage || 'all' }}
+          DRY_RUN: ${{ inputs.dry_run && '--dry-run' || '' }}
+        run: npm run agent -- --stage="$STAGE" $DRY_RUN

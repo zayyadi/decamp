@@ -44,11 +44,17 @@ const agentSchema = ingestSchema
     path: ["CONFIDENCE_REVIEW"],
   });
 
+// Set by GitHub Actions; absent locally, where the run log only goes to stdout.
+const runLogSchema = z.object({
+  GITHUB_STEP_SUMMARY: z.string().min(1).optional(),
+});
+
 export type PublicEnv = z.infer<typeof publicSchema>;
 export type ServerEnv = z.infer<typeof serverSchema>;
 export type ServiceEnv = z.infer<typeof serviceSchema>;
 export type IngestEnv = z.infer<typeof ingestSchema>;
 export type AgentEnv = z.infer<typeof agentSchema>;
+export type RunLogEnv = z.infer<typeof runLogSchema>;
 
 function parse<T extends z.ZodType>(schema: T, source: Source): z.infer<T> {
   // `KEY=` in a .env file arrives as "", which should mean "not set".
@@ -92,4 +98,8 @@ export function getIngestEnv(source: Source = process.env): IngestEnv {
 
 export function getAgentEnv(source: Source = process.env): AgentEnv {
   return parse(agentSchema, source);
+}
+
+export function getRunLogEnv(source: Source = process.env): RunLogEnv {
+  return parse(runLogSchema, source);
 }

@@ -27,7 +27,7 @@ Update the tracker below when a milestone is accepted.
 | 1 | Schema + roster seed | ✅ |
 | 2 | News ingestion | ✅ |
 | 3 | Detection agent | ✅ accepted on the `--llm=claude-cli` eval; repeat with `--llm=api` once a key exists |
-| 4 | Scheduling + orchestration | ☐ |
+| 4 | Scheduling + orchestration | ✅ |
 | 5 | Dashboard UI | ☐ |
 | 6 | Realtime + alerts | ☐ |
 | 7 | Admin review | ☐ |
@@ -87,7 +87,7 @@ app/                    Next.js routes (/, /legislators, /legislators/[id], /eve
 components/             UI (charts/, map/, alerts/, ui/ from shadcn)
 lib/                    env.ts (validated env), supabase clients (server, browser, service), types, formatting, party colours
 agent/
-  run.ts                orchestrator + CLI flags
+  run.ts                orchestrator + CLI flags   run-log.ts (pure: end-of-run summary + exit code)
   sources.ts            feed config + outlet tiers
   ingest/               feeds.ts, canonical.ts, robots.ts, http.ts (polite fetcher), extract.ts, text.ts, store.ts, ingest.ts (stage)
   filter.ts             keyword pre-filter
