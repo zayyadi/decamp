@@ -1,10 +1,10 @@
 import { ArrowRightIcon, TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { PartyBadge, StatusBadge } from "@/components/badges";
+import { PartyBadge } from "@/components/badges";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { chamberShort, formatDate, formatNumber, formatSigned } from "@/lib/format";
-import type { Alert, DashboardEvent, Kpis } from "@/lib/queries/dashboard";
+import type { DashboardEvent, Kpis } from "@/lib/queries/dashboard";
 
 function Kpi({ label, value, detail, icon }: { label: string; value: ReactNode; detail?: ReactNode; icon?: ReactNode }) {
   return (
@@ -37,48 +37,6 @@ export function KpiCards({ kpis, rangeLabel }: { kpis: Kpis; rangeLabel: string 
         detail={kpis.top_loser ? `${formatSigned(kpis.top_loser_net ?? 0)} members` : "No net losses in this view"}
       />
     </div>
-  );
-}
-
-const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-export function relativeTime(iso: string, now: number): string {
-  const minutes = Math.round((Date.parse(iso) - now) / 60_000);
-  if (Math.abs(minutes) < 60) return rtf.format(minutes, "minute");
-  const hours = Math.round(minutes / 60);
-  if (Math.abs(hours) < 24) return rtf.format(hours, "hour");
-  const days = Math.round(hours / 24);
-  return Math.abs(days) < 30 ? rtf.format(days, "day") : formatDate(iso);
-}
-
-export function AlertFeed({ alerts, now }: { alerts: Alert[]; now: number }) {
-  if (alerts.length === 0) return <p className="text-sm text-muted-foreground">No alerts yet.</p>;
-  return (
-    <ol className="divide-y">
-      {alerts.map((a) => {
-        // Unverified events aren't public, so only confirmed alerts link through.
-        const href = a.level === "confirmed" && a.event_id ? `/events/${a.event_id}` : null;
-        return (
-          <li key={a.id} className="flex flex-col gap-1.5 py-3 first:pt-0 last:pb-0">
-            <div className="flex items-center justify-between gap-2">
-              <StatusBadge level={a.level} />
-              <time dateTime={a.created_at} className="text-xs text-muted-foreground">
-                {relativeTime(a.created_at, now)}
-              </time>
-            </div>
-            <p className="text-sm leading-snug font-medium">
-              {href ? (
-                <Link href={href} className="hover:text-primary hover:underline">
-                  {a.title}
-                </Link>
-              ) : (
-                a.title
-              )}
-            </p>
-            <p className="text-xs text-muted-foreground">{a.body}</p>
-          </li>
-        );
-      })}
-    </ol>
   );
 }
 

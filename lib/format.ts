@@ -30,3 +30,16 @@ export function todayInLagos(now: Date = new Date()): string {
 export function formatConfidence(value: number): string {
   return `${Math.round(value * 100)}%`;
 }
+
+const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+/** "5 minutes ago". A time slightly ahead of `now` (clock skew, a live arrival) reads "just now". */
+export function relativeTime(iso: string, now: number): string {
+  const minutes = Math.round(Math.min(0, Date.parse(iso) - now) / 60_000);
+  if (minutes === 0) return "just now";
+  if (Math.abs(minutes) < 60) return rtf.format(minutes, "minute");
+  const hours = Math.round(minutes / 60);
+  if (Math.abs(hours) < 24) return rtf.format(hours, "hour");
+  const days = Math.round(hours / 24);
+  return Math.abs(days) < 30 ? rtf.format(days, "day") : formatDate(iso);
+}

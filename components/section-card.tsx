@@ -14,7 +14,9 @@ export function SectionCard({
   table,
   children,
   className,
+  id,
 }: {
+  id?: string;
   title: string;
   description?: ReactNode;
   actions?: ReactNode;
@@ -23,7 +25,7 @@ export function SectionCard({
   className?: string;
 }) {
   return (
-    <section className={cn("flex flex-col gap-4 rounded-2xl border bg-card p-5 text-card-foreground shadow-xs", className)}>
+    <section id={id} className={cn("flex flex-col gap-4 rounded-2xl border bg-card p-5 text-card-foreground shadow-xs", className)}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-1">
           <h2 className="font-heading text-xl font-bold tracking-tight">{title}</h2>

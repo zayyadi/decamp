@@ -29,7 +29,7 @@ Update the tracker below when a milestone is accepted.
 | 3 | Detection agent | ✅ accepted on the `--llm=claude-cli` eval; repeat with `--llm=api` once a key exists |
 | 4 | Scheduling + orchestration | ✅ |
 | 5 | Dashboard UI | ✅ |
-| 6 | Realtime + alerts | ☐ |
+| 6 | Realtime + alerts | ✅ |
 | 7 | Admin review | ☐ |
 | 8 | Deploy + launch | ☐ |
 
@@ -86,8 +86,8 @@ Env vars are documented in `.env.example`. Keep it complete; it is checked in. `
 
 ```
 app/                    Next.js routes (/, /legislators, /legislators/[id], /events/[id], /admin/*, /about)
-components/             UI (charts/, map/, filters/, alerts/, ui/ from shadcn); badges, section-card, site-header/footer, theme
-lib/                    env.ts (validated env), supabase clients (server, browser, service), queries/ (Zod-validated reads), filters.ts (URL state), format.ts, clock.ts, parties.ts (colours)
+components/             UI (charts/, map/, filters/, alerts/ (live-updates: Realtime + toasts; live-alert-feed), ui/ from shadcn); badges, section-card, site-header/footer, theme
+lib/                    env.ts (validated env), supabase clients (server, browser, service), queries/ (Zod-validated reads), realtime.ts (payload parsing, feed merge), filters.ts (URL state), format.ts, clock.ts, parties.ts (colours)
 agent/
   run.ts                orchestrator + CLI flags   run-log.ts (pure: end-of-run summary + exit code)
   sources.ts            feed config + outlet tiers

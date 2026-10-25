@@ -5,7 +5,8 @@ import { PartyStrength } from "@/components/charts/party-strength";
 import { Timeline } from "@/components/charts/timeline";
 import { OverviewFilters } from "@/components/filters/overview-filters";
 import { StateMap } from "@/components/map/state-map";
-import { AlertFeed, EventsTable, KpiCards } from "@/components/overview-parts";
+import { LiveAlertFeed, LiveStatusBadge } from "@/components/alerts/live-alert-feed";
+import { EventsTable, KpiCards } from "@/components/overview-parts";
 import { EmptyState, PageHeading, SectionCard } from "@/components/section-card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { addDays, parseFilters, toQuery, type Filters } from "@/lib/filters";
@@ -138,9 +139,15 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<"/">["searc
           </SectionCard>
         </div>
 
-        <SectionCard title="Latest alerts" description="Newest first. Unverified reports never change the counts." className="lg:sticky lg:top-20">
+        <SectionCard
+          title="Latest alerts"
+          description="Newest first. Unverified reports never change the counts."
+          actions={<LiveStatusBadge />}
+          className="scroll-mt-20 lg:sticky lg:top-20"
+          id="alerts"
+        >
           <div className="-mr-2 overflow-y-auto pr-2 lg:max-h-[calc(100vh-14rem)]">
-            <AlertFeed alerts={alerts} now={now} />
+            <LiveAlertFeed initial={alerts} now={now} />
           </div>
         </SectionCard>
       </div>
