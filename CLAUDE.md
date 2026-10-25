@@ -28,7 +28,7 @@ Update the tracker below when a milestone is accepted.
 | 2 | News ingestion | ✅ |
 | 3 | Detection agent | ✅ accepted on the `--llm=claude-cli` eval; repeat with `--llm=api` once a key exists |
 | 4 | Scheduling + orchestration | ✅ |
-| 5 | Dashboard UI | ☐ |
+| 5 | Dashboard UI | ✅ |
 | 6 | Realtime + alerts | ☐ |
 | 7 | Admin review | ☐ |
 | 8 | Deploy + launch | ☐ |
@@ -66,6 +66,8 @@ npm run eval                        # detection eval (AGENT.md §7); add -- --ve
 npm run eval -- --llm=claude-cli    # eval via `claude -p` on your Claude login (indicative only; add --claude-bin=<path>)
 npm run seed -- --file supabase/seed/legislators.fictional.csv --fictional [--dry-run]
 npm run seed -- --demo-mode on|off  # show/hide fictional rows (app_settings.demo_mode)
+npm run seed -- --demo-events [--dry-run]   # publish fictional demo defections (idempotent) and turn demo mode on
+npm run build-map -- <geoBoundaries-NGA-ADM1_simplified.geojson>   # rebuild public/maps/ng-states.topo.json
 npx supabase@latest db push --db-url "<session-pooler connection string>"   # apply migrations
 npx supabase@latest gen types typescript --project-id <ref> > lib/database.types.ts
 ```
@@ -84,8 +86,8 @@ Env vars are documented in `.env.example`. Keep it complete; it is checked in. `
 
 ```
 app/                    Next.js routes (/, /legislators, /legislators/[id], /events/[id], /admin/*, /about)
-components/             UI (charts/, map/, alerts/, ui/ from shadcn)
-lib/                    env.ts (validated env), supabase clients (server, browser, service), types, formatting, party colours
+components/             UI (charts/, map/, filters/, alerts/, ui/ from shadcn); badges, section-card, site-header/footer, theme
+lib/                    env.ts (validated env), supabase clients (server, browser, service), queries/ (Zod-validated reads), filters.ts (URL state), format.ts, clock.ts, parties.ts (colours)
 agent/
   run.ts                orchestrator + CLI flags   run-log.ts (pure: end-of-run summary + exit code)
   sources.ts            feed config + outlet tiers
@@ -97,7 +99,7 @@ agent/
   detect.ts             classify stage (store injected)   publish.ts (Supabase store, publish_defection)
 supabase/migrations/    SQL migrations (timestamped; never edit an applied one). States + parties live here
 supabase/seed/          legislators.fictional.csv, legislators.template.csv, README.md (column reference)
-scripts/                seed-roster.ts, lib/ (roster-csv.ts, load-env.ts)
+scripts/                seed-roster.ts, build-map.ts, lib/ (roster-csv.ts, load-env.ts, demo-events.ts)
 eval/                   fixtures/, run-eval.ts, metrics.ts, cache.ts, claude-cli.ts (eval-only `claude -p` backend), .cache/ (gitignored)
 tests/                  vitest tests mirroring agent/, lib/, scripts/ (config: vitest.config.mts)
 tests/db/               SQL tests on PGlite: harness.ts, supabase-shim.sql, fixtures.ts

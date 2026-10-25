@@ -120,6 +120,7 @@ describe("writes", () => {
   it.each([
     ["seed_roster", "select public.seed_roster('[]'::jsonb, true)"],
     ["set_demo_mode", "select public.set_demo_mode(true)"],
+    ["seed_demo_events", "select public.seed_demo_events('[]'::jsonb)"],
     ["reverse_defection", "select public.reverse_defection(gen_random_uuid(), 'x')"],
   ])("restricted function %s is not callable by anon", async (_label, sql) => {
     await expect(asRole(db, "anon", (tx) => tx.query(sql))).rejects.toThrow(/permission denied/);

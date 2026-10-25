@@ -85,6 +85,12 @@ The guiding principle is **precision over speed**. A false alert costs more cred
 | Failure policy (M4) | Fail on any error · never fail · fail on systemic errors only | **Exit 1 only when a stage crashes or no feed is readable; stages are isolated** | A publisher being down is routine and would make the schedule permanently red; a red run should mean the agent or its config needs attention |
 | Overlapping runs (M4) | Allow overlap · cancel the running one · queue | **One `concurrency` group, no cancelling** | Crawl delays can push a run past 15 min; cancelling mid-run would leave half-processed articles, and overlap would race on the same rows |
 | Agent config in CI (M4) | All in secrets · keys in secrets, tunables in variables | **Keys in Actions secrets; models, thresholds and limits in Actions variables, defaulting in `lib/env.ts`** | Tunables stay visible and editable without a deploy; secrets stay masked |
+| Visual design (M5) | shadcn defaults · Advokc house style (advokc.ng) · Promise Tracker style (promisetracker.ng) | **Promise Tracker's style, adapted:** maroon `#77121a` primary, red `#d63321` highlight words, pink washes, navy `#0c1821` ink and footer, Bodoni Moda headings over Inter, pill tabs | The sibling civic-tech product sets reader expectations. Added: a navy dark mode with a rose primary, contrast-checked tokens, and distinct Confirmed/Unverified badges with icons |
+| Query typing (M5) | Generated Supabase types · Zod at the query boundary | **Zod schemas in `lib/queries/*`, as the agent does** | No `lib/database.types.ts` has been generated yet; Zod also catches drift at runtime. Switching to generated types later is local to `lib/queries/` |
+| Overview freshness (M5) | `use cache` with tags · render per request | **Per request: every query reads cookies, inside `<Suspense>`; the shell stays prerendered** | M6 needs a published event to show within 3 s via `router.refresh()`, which per-request reads give for free |
+| Party strength chart (M5) | Recharts stacked bar · plain flex bar | **A labelled flex bar per chamber; Recharts for the Sankey and timeline** | A seat-share strip reads better as one 100% bar, and needs no client JS except the date slider |
+| Map data (M5) | Hand-drawn SVG · Natural Earth · geoBoundaries ADM1 | **geoBoundaries NGA ADM1 (GRID3, 2022, CC BY 4.0), simplified to a 59 KB TopoJSON by `npm run build-map`** | Open licence, current state lines, names match `ng_states` with one rename (FCT); attribution in the footer |
+| Demo data (M5) | Hand-written SQL fixtures · a planner + SQL function | **`npm run seed -- --demo-events`: a deterministic planner and the service-role-only `seed_demo_events` function** | Exercises the real `publish_defection` path and alerts; fictional rows only; sources on the reserved `.invalid` domain; re-runs add nothing |
 | Crawl pacing (M2) | Fixed 1 req/s per host · honour `Crawl-delay` | **The larger of 1 s and the host's `Crawl-delay`** | Several outlets ask for 10–30 s; feeds change slowly, so the cost is only run time |
 
 Model IDs live in env vars (`CLASSIFIER_MODEL`, `ESCALATION_MODEL`) so they can change without code changes.
@@ -161,7 +167,7 @@ Enumerations are `text` columns with `check` constraints, not Postgres enums.
 | id | smallint PK | |
 | code | text unique | `APC`, `PDP`, `LP`, `NNPP`, `APGA`, `SDP`, `ADC`, `YPP`, `ADP`, … Loaded by migration from the 2023 ballot; verify against INEC's current register before launch |
 | name | text | Full name |
-| color | text null | Hex value for charts; assigned in Milestone 5 (validated for contrast in both themes) |
+| color | text null | Hex value for charts. Set in Milestone 5 and mirrored in `lib/parties.ts`; each reaches 3:1 contrast on the light and dark page and card backgrounds (tested) |
 | aliases | text[] | e.g., `{"All Progressives Congress","the ruling party"}` (the last is only a hint, never an automatic match) |
 
 **`legislators`**
@@ -416,6 +422,7 @@ Each milestone ends in a runnable, demonstrable state. Claude Code pauses after 
 ## 11. Launch checklist
 
 - [ ] Real roster seeded, every row verified by two people and sourced
+- [ ] Demo mode off in production (`npm run seed -- --demo-mode off`), so fictional rows and demo events are hidden
 - [ ] Eval passes: Confirmed precision ≥ 95%, recall ≥ 85%, entity accuracy ≥ 95%
 - [ ] A dry-run of the agent for 72 h, with no false Confirmed alerts
 - [ ] `/about` methodology, disclaimer and corrections contact are live

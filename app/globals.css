@@ -1,11 +1,53 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Promise Tracker palette (promisetracker.ng): maroon primary, red highlight,
+     pink washes, navy ink. Text pairs reach 4.5:1. */
   --background: #ffffff;
-  --foreground: #171717;
-  --muted: #5c5c5c;
-  --border: #e5e5e5;
-  --accent: #0b7a3e;
+  --foreground: #0c1821;
+  --card: #ffffff;
+  --card-foreground: #0c1821;
+  --popover: #ffffff;
+  --popover-foreground: #0c1821;
+  --primary: #77121a;
+  --primary-foreground: #ffffff;
+  --secondary: #fff6f6;
+  --secondary-foreground: #0c1821;
+  --muted: #fff6f6;
+  --muted-foreground: #5b6670;
+  --accent: #fcd7da;
+  --accent-foreground: #77121a;
+  --highlight: #d63321;
+  --destructive: #d63321;
+  --border: #efdfe0;
+  --input: #e6d3d5;
+  --ring: #d63321;
+  --ink: #0c1821;
+  --ink-foreground: #e9edf0;
+  --chart-1: #77121a;
+  --chart-2: #d63321;
+  --chart-3: #e2949a;
+  --chart-4: #5b6670;
+  --chart-5: #0c1821;
+  --radius: 0.75rem;
+  /* Badges carry a text label too (CLAUDE.md). */
+  --confirmed: #77121a;
+  --confirmed-foreground: #ffffff;
+  --unverified: #fff3d6;
+  --unverified-foreground: #7a4b00;
+  --unverified-border: #e9b949;
+  --sidebar: #fff6f6;
+  --sidebar-foreground: #0c1821;
+  --sidebar-primary: #77121a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #fcd7da;
+  --sidebar-accent-foreground: #77121a;
+  --sidebar-border: #efdfe0;
+  --sidebar-ring: #d63321;
 }
 
 @theme inline {
@@ -14,22 +56,103 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-accent: var(--accent);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-display);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-highlight: var(--highlight);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-unverified-border: var(--unverified-border);
+  --color-confirmed: var(--confirmed);
+  --color-confirmed-foreground: var(--confirmed-foreground);
+  --color-unverified: var(--unverified);
+  --color-unverified-foreground: var(--unverified-foreground);
+  --color-input: var(--input);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --muted: #a3a3a3;
-    --border: #262626;
-    --accent: #3ecf7d;
+.dark {
+  /* Built on Promise Tracker's navy footer; the maroon turns rose to stay legible. */
+  --background: #0c1821;
+  --foreground: #f5efef;
+  --card: #132532;
+  --card-foreground: #f5efef;
+  --popover: #132532;
+  --popover-foreground: #f5efef;
+  --primary: #f2a0a6;
+  --primary-foreground: #3a070c;
+  --secondary: #172b39;
+  --secondary-foreground: #f5efef;
+  --muted: #172b39;
+  --muted-foreground: #a3b0ba;
+  --accent: #3a1418;
+  --accent-foreground: #ffd6d9;
+  --highlight: #ff8a7a;
+  --destructive: #ff8a7a;
+  --border: rgb(255 255 255 / 10%);
+  --input: rgb(255 255 255 / 16%);
+  --ring: #f2a0a6;
+  --ink: #07111a;
+  --ink-foreground: #c9d2d9;
+  --chart-1: #f2a0a6;
+  --chart-2: #ff8a7a;
+  --chart-3: #8a2a33;
+  --chart-4: #a3b0ba;
+  --chart-5: #f5efef;
+  --confirmed: #f2a0a6;
+  --confirmed-foreground: #3a070c;
+  --unverified: #3a2a05;
+  --unverified-foreground: #ffd98a;
+  --unverified-border: #8a6512;
+  --sidebar: #132532;
+  --sidebar-foreground: #f5efef;
+  --sidebar-primary: #f2a0a6;
+  --sidebar-primary-foreground: #3a070c;
+  --sidebar-accent: #3a1418;
+  --sidebar-accent-foreground: #ffd6d9;
+  --sidebar-border: rgb(255 255 255 / 10%);
+  --sidebar-ring: #f2a0a6;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }

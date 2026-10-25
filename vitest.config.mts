@@ -8,5 +8,8 @@ export default defineConfig({
   test: {
     include: ["tests/**/*.test.ts"],
     environment: "node",
+    // Each tests/db file holds an in-memory Postgres (PGlite); one worker per
+    // core runs out of memory on an 8 GB machine.
+    maxWorkers: 4,
   },
 });

@@ -7,6 +7,8 @@
 
 States (`ng_states`) and parties (`parties`) are reference data in `supabase/migrations/`, not seed files.
 
+Demo defections for the fictional roster come from `npm run seed -- --demo-events` (planner in `scripts/lib/demo-events.ts`), not from a file. They only touch fictional legislators, cite sources on the reserved `demo.example.invalid` domain, and are hidden from the public whenever demo mode is off.
+
 ## Columns
 
 | Column | Required | Notes |
