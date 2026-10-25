@@ -119,11 +119,12 @@ export async function getMergeTargets(legislatorIds: string[]): Promise<MergeTar
 const publishedRows = z.array(
   z.object({
     id: z.string(),
+    raw_name: z.string(),
     event_date: z.string().nullable(),
     created_at: z.string(),
     reviewed_at: z.string().nullable(),
     confidence: num,
-    legislator: z.object({ id: z.string(), full_name: z.string(), chamber, state: z.string(), is_fictional: z.boolean() }),
+    legislator: z.object({ id: z.string(), full_name: z.string(), chamber, state: z.string(), is_fictional: z.boolean() }).nullable(),
     from_party: z.object({ code: z.string() }).nullable(),
     to_party: z.object({ code: z.string() }),
     // The affiliation this event opened; still open means it is the member's latest move.
@@ -137,7 +138,7 @@ export async function getPublished(limit = 50): Promise<PublishedItem[]> {
   const result = await db
     .from("defection_events")
     .select(
-      "id, event_date, created_at, reviewed_at, confidence, " +
+      "id, raw_name, event_date, created_at, reviewed_at, confidence, " +
         "legislator:legislators(id, full_name, chamber, state, is_fictional), " +
         "from_party:parties!defection_events_from_party_id_fkey(code), to_party:parties!defection_events_to_party_id_fkey(code), " +
         "affiliations:party_affiliations!party_affiliations_event_fk(end_date)",
@@ -148,7 +149,7 @@ export async function getPublished(limit = 50): Promise<PublishedItem[]> {
     .limit(limit);
   return parseRows(publishedRows, result, "published events").map((e) => ({
     ...e,
-    reversible: e.affiliations.some((a) => a.end_date === null),
+    reversible: e.legislator !== null && e.affiliations.some((a) => a.end_date === null),
   }));
 }
 

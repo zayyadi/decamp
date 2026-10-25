@@ -4,10 +4,13 @@
 |---|---|
 | `legislators.fictional.csv` | Demo roster. **All names are fictional**; constituencies are labelled "Demo" and sources point at `example.org`. Load with `--fictional`. |
 | `legislators.template.csv` | Header for the real roster. Fill it from official sources (SPEC.md §9) and have a second person verify it before loading. |
+| `defections.historical.json` | Sourced historical Senate and House defections since June 2023. Real records; partial coverage documented in `docs/HISTORICAL_DATA.md`. |
 
 States (`ng_states`) and parties (`parties`) are reference data in `supabase/migrations/`, not seed files.
 
-Demo defections for the fictional roster come from `npm run seed -- --demo-events` (planner in `scripts/lib/demo-events.ts`), not from a file. They only touch fictional legislators, cite sources on the reserved `demo.example.invalid` domain, and are hidden from the public whenever demo mode is off.
+`npm run seed -- --demo-events` imports `defections.historical.json` through the service-only `seed_historical_events` function after migrations are applied. Add `--dry-run` to validate offline. This is real data, not flagged fictional; the import hides the fictional roster and records partial coverage for the dashboard banner. It replays party changes chronologically rather than flattening repeated moves into a CSV row. `npm run seed:historical -- --file <file.json>` accepts another verified backfill.
+
+Synthetic development defections remain available with `npm run seed -- --fictional-events` (planner in `scripts/lib/demo-events.ts`). They only touch fictional legislators, cite reserved `demo.example.invalid` URLs, and are hidden whenever demo mode is off.
 
 ## Columns
 

@@ -10,6 +10,11 @@ const publicSchema = z.object({
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1),
 });
 
+const siteSchema = z.object({
+  NEXT_PUBLIC_SITE_URL: z.url({ protocol: /^https?$/ }).optional(),
+  NEXT_PUBLIC_CORRECTIONS_URL: z.url({ protocol: /^(https|mailto)$/ }).optional(),
+});
+
 const serverSchema = publicSchema.extend({
   SUPABASE_SECRET_KEY: z.string().min(1),
 });
@@ -102,4 +107,11 @@ export function getAgentEnv(source: Source = process.env): AgentEnv {
 
 export function getRunLogEnv(source: Source = process.env): RunLogEnv {
   return parse(runLogSchema, source);
+}
+
+export function getSiteEnv(source: Source = {
+  NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+  NEXT_PUBLIC_CORRECTIONS_URL: process.env.NEXT_PUBLIC_CORRECTIONS_URL,
+}) {
+  return parse(siteSchema, source);
 }

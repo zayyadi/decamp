@@ -26,6 +26,12 @@ async function Published() {
       title="Published defections"
       description="Reverse a defection when it turns out to be wrong or is rescinded. Its party change is undone and your note is published as a correction. Only a member's most recent defection can be reversed."
     >
+      {events.some((e) => !e.legislator) ? (
+        <p role="status" className="rounded-xl border border-unverified-border bg-unverified p-4 text-sm text-unverified-foreground">
+          Some linked member records are unavailable to this session. Their events remain listed, but reversal is disabled.
+          {" "}If this started after turning demo mode off, apply the pending admin visibility migration in Supabase, then reload.
+        </p>
+      ) : null}
       {events.length === 0 ? (
         <AdminEmpty>No published defections yet.</AdminEmpty>
       ) : (
@@ -34,17 +40,17 @@ async function Published() {
             <li key={e.id} className="grid gap-4 p-4 md:grid-cols-[3fr_2fr]">
               <div className="space-y-1.5">
                 <div className="flex flex-wrap items-center gap-2">
-                  <AdminLink href={`/events/${e.id}`}>
+                  {e.legislator ? <AdminLink href={`/events/${e.id}`}>
                     {honorific(e.legislator.chamber)} {e.legislator.full_name}
-                  </AdminLink>
-                  {e.legislator.is_fictional ? <FictionalBadge /> : null}
+                  </AdminLink> : <span className="font-medium">{e.raw_name} · member record unavailable</span>}
+                  {e.legislator?.is_fictional ? <FictionalBadge /> : null}
                 </div>
                 <p className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                   <PartyBadge code={e.from_party?.code ?? null} />
                   <ArrowRightIcon className="size-3.5" aria-label="to" />
                   <PartyBadge code={e.to_party.code} />
                   <span>
-                    · {chamberShort(e.legislator.chamber)}, {e.legislator.state} · {formatDate(e.event_date ?? e.created_at)}
+                    {e.legislator ? <>· {chamberShort(e.legislator.chamber)}, {e.legislator.state} </> : null}· {formatDate(e.event_date ?? e.created_at)}
                     {e.reviewed_at ? " · approved by an editor" : " · published by the agent"}
                   </span>
                 </p>
@@ -58,7 +64,9 @@ async function Published() {
                     </div>
                   </details>
                 ) : (
-                  <p className="text-xs text-muted-foreground">A later defection of this member supersedes it; reverse that one first.</p>
+                  <p className="text-xs text-muted-foreground">{!e.legislator
+                    ? "Reversal is unavailable until the linked member record can be read."
+                    : "No open affiliation is linked to this event. A later defection or departure may have closed it."}</p>
                 )}
               </div>
             </li>

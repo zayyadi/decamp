@@ -13,6 +13,7 @@ export const PARTY_COLORS: Record<string, string> = {
   APGA: "#b7791f",
   SDP: "#d4661c",
   ADC: "#0f8a7e",
+  NDC: "#737373",
   YPP: "#8a7a0a",
   ADP: "#d23a78",
   PRP: "#64748b",

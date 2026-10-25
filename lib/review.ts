@@ -13,10 +13,15 @@ export type RejectReason = (typeof REJECT_REASONS)[number]["value"];
 
 /** Where to go after signing in: only paths inside /admin, never another origin. */
 export function safeNext(next: string | null | undefined): string {
-  if (!next || !next.startsWith("/admin") || next.startsWith("//") || next.includes("\\") || next.startsWith("/admin/login")) {
+  if (!next || next.includes("\\")) return "/admin/review";
+  try {
+    const url = new URL(next, "https://admin.invalid");
+    if (!next.startsWith("/") || url.origin !== "https://admin.invalid" ||
+      !url.pathname.startsWith("/admin/") || url.pathname.startsWith("/admin/login")) return "/admin/review";
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
     return "/admin/review";
   }
-  return next;
 }
 
 export interface ReviewFields {

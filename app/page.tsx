@@ -79,7 +79,7 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<"/">["searc
         <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
           <SectionCard
             title="Party strength"
-            description="Seats per party from confirmed membership records. Drag to see any date."
+            description="Seats per party among members in the database. A partial roster does not represent full chamber totals. Drag to see any date."
             table={
               <Table>
                 <TableHeader>

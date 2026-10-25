@@ -138,3 +138,11 @@ export async function getDemoMode(): Promise<boolean> {
   const db = await createAnonClient();
   return parseRows(z.boolean(), await db.rpc("demo_mode"), "demo_mode");
 }
+
+export async function getHistoricalCoverage() {
+  const db = await createAnonClient();
+  const result = await db.from("app_settings").select("historical_coverage").single();
+  return parseRows(z.object({ historical_coverage: z.object({
+    start: z.string(), reviewed_through: z.string(), latest_event: z.string(), complete: z.boolean(),
+  }).nullable() }), result, "historical coverage").historical_coverage;
+}

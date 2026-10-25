@@ -16,6 +16,9 @@
     "agent": "tsx agent/run.ts",
     "eval": "tsx eval/run-eval.ts",
     "seed": "tsx scripts/seed-roster.ts",
+    "seed:historical": "tsx scripts/seed-historical.ts",
+    "launch:check": "tsx scripts/check-launch.ts",
+    "smoke": "tsx scripts/smoke-test.ts",
     "build-map": "tsx scripts/build-map.ts",
     "admin": "tsx scripts/admin.ts"
   },

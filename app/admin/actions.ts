@@ -63,9 +63,11 @@ function editsFrom(form: FormData) {
 export async function approveEvent(_prev: ActionState, form: FormData): Promise<ActionState> {
   const id = uuid.safeParse(field(form, "event_id"));
   if (!id.success) return { ok: false, message: "Unknown event." };
+  const parsedNote = note.safeParse(field(form, "note"));
+  if (!parsedNote.success) return { ok: false, message: "Keep the note within 1,000 characters." };
   return run(
     "review_approve",
-    { p_event_id: id.data, p_edits: editsFrom(form), p_note: note.parse(field(form, "note")) ?? null },
+    { p_event_id: id.data, p_edits: editsFrom(form), p_note: parsedNote.data ?? null },
     "Approved and published.",
   );
 }
@@ -73,7 +75,9 @@ export async function approveEvent(_prev: ActionState, form: FormData): Promise<
 export async function saveEdits(_prev: ActionState, form: FormData): Promise<ActionState> {
   const id = uuid.safeParse(field(form, "event_id"));
   if (!id.success) return { ok: false, message: "Unknown event." };
-  return run("review_edit", { p_event_id: id.data, p_edits: editsFrom(form), p_note: note.parse(field(form, "note")) ?? null }, "Changes saved.");
+  const parsedNote = note.safeParse(field(form, "note"));
+  if (!parsedNote.success) return { ok: false, message: "Keep the note within 1,000 characters." };
+  return run("review_edit", { p_event_id: id.data, p_edits: editsFrom(form), p_note: parsedNote.data ?? null }, "Changes saved.");
 }
 
 export async function rejectEvent(_prev: ActionState, form: FormData): Promise<ActionState> {

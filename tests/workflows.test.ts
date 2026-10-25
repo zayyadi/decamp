@@ -32,4 +32,11 @@ describe("agent workflow", () => {
   it("documents each variable in the README", () => {
     for (const name of agentVars) expect(readme, name).toContain(`\`${name}\``);
   });
+
+  it("keeps scheduled runs read-only until live mode is explicitly enabled", () => {
+    expect(workflow).toContain("github.event_name == 'schedule' && vars.AGENT_LIVE_ENABLED != 'true'");
+    expect(workflow).toContain("github.event_name == 'workflow_dispatch' && inputs.dry_run");
+    expect(workflow).toContain("uses: actions/upload-artifact@v4");
+    expect(workflow).toContain("retention-days: 7");
+  });
 });

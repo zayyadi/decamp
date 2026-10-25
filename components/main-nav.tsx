@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/", label: "Overview" },
   { href: "/legislators", label: "Legislators" },
+  { href: "/about", label: "About" },
 ] as const;
 
 const isActive = (href: string, pathname: string | null) =>

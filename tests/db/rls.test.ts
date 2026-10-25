@@ -27,6 +27,19 @@ async function publishedAndPendingEvents() {
 }
 
 describe("fictional rows", () => {
+  it("admins can join published events to their legislators and affiliations with demo mode off", async () => {
+    const { published } = await publishedAndPendingEvents();
+    const result = await asRole(db, "authenticated", (tx) => rows(tx, `
+      select e.id, l.id as legislator, pa.id as affiliation
+      from defection_events e
+      left join legislators l on l.id = e.legislator_id
+      left join party_affiliations pa on pa.defection_event_id = e.id
+      where e.status = 'published'
+    `), adminClaims);
+    expect(result).toEqual([{ id: published, legislator: expect.any(String), affiliation: expect.any(Number) }]);
+    expect(await asRole(db, "authenticated", (tx) => rows(tx, "select id from legislators"), userClaims)).toEqual([]);
+  });
+
   it("are hidden from the public while demo mode is off", async () => {
     await publishedAndPendingEvents();
     expect(await asAnon("select id from legislators")).toEqual([]);

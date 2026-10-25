@@ -62,6 +62,7 @@ The guiding principle is **precision over speed**. A false alert costs more cred
 |---|---|---|---|
 | Web framework | Next.js · Remix · Vite SPA + API | **Next.js (App Router) + TypeScript** | Server components for fast first load, API routes, one deploy target |
 | Database + realtime | Supabase · Firebase · Postgres + custom WebSocket server | **Supabase (Postgres + Realtime + Auth)** | Relational data fits; realtime subscriptions and auth are built in; free tier |
+| Web hosting | Vercel · VPS with systemd · Docker on VPS | **VPS with systemd and Nginx** | User preference (25 October 2026); one Node process keeps operations simple; Docker adds packaging work; VPS requires patching, TLS renewal and monitoring |
 | Agent runtime | Vercel Cron · Supabase pg_cron + Edge Functions · GitHub Actions cron | **GitHub Actions scheduled workflow running `npm run agent`** | Free, runs every 15 min, full Node runtime, visible logs, no serverless timeout |
 | LLM | Claude · OpenAI · local model | **Claude API: `claude-haiku-5-5` to classify, escalating to `claude-sonnet-5-5`** | Cheap first pass, stronger model only for ambiguous cases; structured outputs give strict JSON |
 | News ingestion | News API · RSS · broad scraping | **Outlet RSS feeds + fetching the article page only for pre-filtered items** | Free, low load on publishers, easy to keep within terms of service |
@@ -90,7 +91,7 @@ The guiding principle is **precision over speed**. A false alert costs more cred
 | Overview freshness (M5) | `use cache` with tags · render per request | **Per request: every query reads cookies, inside `<Suspense>`; the shell stays prerendered** | M6 needs a published event to show within 3 s via `router.refresh()`, which per-request reads give for free |
 | Party strength chart (M5) | Recharts stacked bar · plain flex bar | **A labelled flex bar per chamber; Recharts for the Sankey and timeline** | A seat-share strip reads better as one 100% bar, and needs no client JS except the date slider |
 | Map data (M5) | Hand-drawn SVG · Natural Earth · geoBoundaries ADM1 | **geoBoundaries NGA ADM1 (GRID3, 2022, CC BY 4.0), simplified to a 59 KB TopoJSON by `npm run build-map`** | Open licence, current state lines, names match `ng_states` with one rename (FCT); attribution in the footer |
-| Demo data (M5) | Hand-written SQL fixtures · a planner + SQL function | **`npm run seed -- --demo-events`: a deterministic planner and the service-role-only `seed_demo_events` function** | Exercises the real `publish_defection` path and alerts; fictional rows only; sources on the reserved `.invalid` domain; re-runs add nothing |
+| Demo data (updated M7, user request 2026-10-25) | Synthetic events · sourced historical backfill | **`npm run seed -- --demo-events` imports sourced Senate and House records since June 2023 through service-only `seed_historical_events`; `--fictional-events` retains the synthetic development flow** | Real data has source evidence, chronological party chains and historical alert dates; imports are atomic and idempotent. A coverage banner identifies gaps and partial roster totals. See `docs/HISTORICAL_DATA.md`. |
 | Realtime scope (M6) | Stream every table · alerts only · alerts + defection_events | **`alerts` and `defection_events` in the `supabase_realtime` publication; nothing else (tested)** | Matches §6.4; Realtime applies the subscriber's RLS and column grants, so anon gets published events only and never article text |
 | Live update handling (M6) | Toast on every change · toast on alerts, refresh on both | **A toast per alert INSERT; any alert or event change schedules one `router.refresh()` 300 ms later** | Every publish, review and correction writes an alert, so alerts carry the toast text; event changes without an alert (e.g. a manual SQL edit) still refresh the charts. Measured on the dev project: toast 0.4 s and charts 1.7 s after commit |
 | Admin sign-in (M7) | Magic link · email + password · OAuth | **Email + password (Supabase Auth); accounts created in the dashboard, role granted with `npm run admin -- --grant <email>`** | Magic links depend on email delivery (Supabase's default sender is rate-limited); OAuth needs provider setup. `app_metadata` is writable only by the service role, so users can't promote themselves |
@@ -165,7 +166,7 @@ Enumerations are `text` columns with `check` constraints, not Postgres enums.
 
 **`ng_states`**: name (PK; the 36 states plus `FCT`), zone (geopolitical zone), senate_seats (3, or 1 for the FCT). Loaded by migration.
 
-**`app_settings`**: a single row holding `demo_mode boolean`. RLS reads it through `demo_mode()`. It is set with `npm run seed -- --demo-mode on|off`.
+**`app_settings`**: a single row holding `demo_mode boolean` and nullable `historical_coverage jsonb` (start, reviewed_through, latest_event, complete). RLS reads fictional visibility through `demo_mode()`. It is set with `npm run seed -- --demo-mode on|off`; historical imports hide fictional records and record partial coverage for the public banner.
 
 **`parties`**
 | Column | Type | Notes |
@@ -421,7 +422,7 @@ Each milestone ends in a runnable, demonstrable state. Claude Code pauses after 
 | 5 | Dashboard UI | All `/` components plus `/legislators`, profile and event pages work with filters stored in the URL; light and dark modes; table alternatives for charts and the map |
 | 6 | Realtime + alerts | Inserting a published event (via SQL or the admin panel) shows a toast and updates the charts in under 3 seconds with no refresh |
 | 7 | Admin review | Auth-gated queue with approve, edit and reject; approving calls `publish_defection`; reversal flow; `/admin/runs` page |
-| 8 | Deploy + launch | Deployed to Vercel with Supabase production; the launch checklist (§11) is complete |
+| 8 | Deploy + launch | Deployed to a VPS with Supabase production; the launch checklist (§11) is complete |
 
 ---
 
@@ -435,7 +436,7 @@ Each milestone ends in a runnable, demonstrable state. Claude Code pauses after 
 - [ ] `/about` methodology, disclaimer and corrections contact are live
 - [ ] robots.txt and terms of service reviewed for every configured outlet (as of M2, the terms of Punch, Vanguard, Channels TV and BusinessDay still need a manual read; see `review` in `agent/sources.ts`)
 - [ ] RLS audit: anon cannot read drafts, review items or article bodies
-- [ ] Service-role key exists only in GitHub and Vercel server environments
+- [ ] Service-role key exists only in GitHub and VPS server environments
 - [ ] Database backups enabled; restore tested once
 - [ ] Cost check: projected monthly spend is within budget
 - [ ] `app_settings.demo_mode` is off (`npm run seed -- --demo-mode off`) and fictional rows are hidden
@@ -461,4 +462,4 @@ Each milestone ends in a runnable, demonstrable state. Claude Code pauses after 
 | LLM | Anthropic Claude API key available |
 | Budget | ≤ $20/month |
 | Pace | Pause after every milestone |
-| Hosting | Vercel (web) + Supabase (DB) + GitHub Actions (agent) |
+| Hosting | VPS (web) + Supabase (DB) + GitHub Actions (agent) |

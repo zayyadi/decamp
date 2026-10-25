@@ -6,6 +6,7 @@ import {
   getRunLogEnv,
   getServerEnv,
   getServiceEnv,
+  getSiteEnv,
 } from "@/lib/env";
 
 const publicVars = {
@@ -19,6 +20,15 @@ const agentVars = {
   ANTHROPIC_API_KEY: "sk-test",
   AGENT_CONTACT_URL: "https://example.org/about",
 };
+
+describe("getSiteEnv", () => {
+  it("supports a public corrections page or email and allows local setup before launch", () => {
+    expect(getSiteEnv({})).toEqual({});
+    expect(getSiteEnv({ NEXT_PUBLIC_CORRECTIONS_URL: "mailto:editor@example.org" }).NEXT_PUBLIC_CORRECTIONS_URL).toBe("mailto:editor@example.org");
+    expect(getSiteEnv({ NEXT_PUBLIC_CORRECTIONS_URL: "https://example.org/contact" }).NEXT_PUBLIC_CORRECTIONS_URL).toBe("https://example.org/contact");
+    expect(() => getSiteEnv({ NEXT_PUBLIC_CORRECTIONS_URL: "javascript:alert(1)" })).toThrow();
+  });
+});
 
 describe("getPublicEnv", () => {
   it("accepts valid values", () => {

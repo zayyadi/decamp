@@ -5,18 +5,21 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { planDemoEvents, type DemoLegislator } from "./lib/demo-events";
 import { loadLocalEnv } from "./lib/load-env";
 import { parseRosterCsv } from "./lib/roster-csv";
+import { seedHistorical } from "./lib/historical-import";
 
 const usage = `Usage:
   npm run seed -- --file <roster.csv> [--fictional] [--dry-run]
   npm run seed -- --demo-mode on|off
   npm run seed -- --demo-events [--dry-run]
+  npm run seed -- --fictional-events [--dry-run]
 
   --file        Roster CSV (columns: see supabase/seed/README.md)
   --fictional   Mark every row is_fictional (demo roster)
   --dry-run     Validate the file only; no database access
   --demo-mode   Show (on) or hide (off) fictional rows to the public
-  --demo-events Publish fictional defections for the fictional roster and turn
-                demo mode on (idempotent; --dry-run prints the plan only)`;
+  --demo-events Import sourced historical Senate and House defections since 2023
+                and hide fictional rows (idempotent; --dry-run validates offline)
+  --fictional-events Generate fictional development events and turn demo mode on`;
 
 const demoRoster = z.array(
   z.object({
@@ -97,12 +100,13 @@ async function main(): Promise<number> {
       "dry-run": { type: "boolean", default: false },
       "demo-mode": { type: "string" },
       "demo-events": { type: "boolean", default: false },
+      "fictional-events": { type: "boolean", default: false },
       help: { type: "boolean", default: false },
     },
   });
 
   const demoMode = values["demo-mode"];
-  if (values.help || (!values.file && demoMode === undefined && !values["demo-events"])) {
+  if (values.help || (!values.file && demoMode === undefined && !values["demo-events"] && !values["fictional-events"])) {
     console.log(usage);
     return values.help ? 0 : 1;
   }
@@ -143,6 +147,10 @@ async function main(): Promise<number> {
   }
 
   if (values["demo-events"]) {
+    await seedHistorical("supabase/seed/defections.historical.json", values["dry-run"]);
+  }
+
+  if (values["fictional-events"]) {
     const code = await seedDemoEvents(values["dry-run"]);
     if (code !== 0) return code;
   }

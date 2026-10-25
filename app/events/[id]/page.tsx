@@ -112,7 +112,9 @@ async function EventDetail({ params }: { params: PageProps<"/events/[id]">["para
           <Fact label="Defection date">{formatDate(e.event_date)}</Fact>
           <Fact label="Announced in plenary">{formatDate(e.announced_date)}</Fact>
           <Fact label="Confidence">
-            {formatConfidence(e.confidence)} <span className="text-sm font-normal text-muted-foreground">(confirmed at 85% or by an editor)</span>
+            {e.model === "historical-import" ? "Sourced historical record" : <>
+              {formatConfidence(e.confidence)} <span className="text-sm font-normal text-muted-foreground">(confirmed at 85% or by an editor)</span>
+            </>}
           </Fact>
         </dl>
         <blockquote className="mt-5 border-l-4 border-primary pl-4 font-heading text-lg leading-relaxed italic">{e.evidence_quote}</blockquote>
@@ -148,7 +150,7 @@ async function EventDetail({ params }: { params: PageProps<"/events/[id]">["para
       ) : null}
 
       <p className="text-xs text-muted-foreground">
-        Detected by {e.model ?? "unknown model"} with prompt {e.prompt_version ?? "unknown"} · recorded {formatDate(e.created_at)}
+        {e.model === "historical-import" ? "Imported from historical source research" : <>Detected by {e.model ?? "unknown model"} with prompt {e.prompt_version ?? "unknown"}</>} · recorded {formatDate(e.created_at)}
         {e.reasoning_summary ? <> · {e.reasoning_summary}</> : null}
       </p>
     </>

@@ -8,7 +8,7 @@ describe("safeNext", () => {
   });
 
   it("refuses anything that could leave the admin area or the site", () => {
-    for (const bad of [undefined, null, "", "/", "/legislators", "https://evil.example", "//evil.example/admin", "/admin\\..\\x", "/admin/login"]) {
+    for (const bad of [undefined, null, "", "/", "/legislators", "https://evil.example", "//evil.example/admin", "/admin\\..\\x", "/admin/login", "/admin-other", "/admin/../legislators", "/admin/%2e%2e/legislators"]) {
       expect(safeNext(bad), String(bad)).toBe("/admin/review");
     }
   });

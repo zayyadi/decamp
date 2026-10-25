@@ -59,7 +59,17 @@ jobs:
           CONFIDENCE_REVIEW: ${{ vars.CONFIDENCE_REVIEW }}
           AGENT_LOOKBACK_HOURS: ${{ vars.AGENT_LOOKBACK_HOURS }}
           AGENT_MAX_LLM_CALLS_PER_RUN: ${{ vars.AGENT_MAX_LLM_CALLS_PER_RUN }}
-          # Scheduled runs have no inputs: full and live.
+          # Keep schedules read-only until the launch rehearsal is approved.
+          # Manual runs still follow the explicit dry_run input.
           STAGE: ${{ inputs.stage || 'all' }}
-          DRY_RUN: ${{ inputs.dry_run && '--dry-run' || '' }}
-        run: npm run agent -- --stage="$STAGE" $DRY_RUN
+          DRY_RUN: ${{ ((github.event_name == 'schedule' && vars.AGENT_LIVE_ENABLED != 'true') || (github.event_name == 'workflow_dispatch' && inputs.dry_run)) && '--dry-run' || '' }}
+        run: npm run agent -- --stage="$STAGE" $DRY_RUN | tee agent-run.log
+
+      - name: Retain rehearsal logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-run-${{ github.run_id }}
+          path: agent-run.log
+          retention-days: 7
+          if-no-files-found: ignore

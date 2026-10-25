@@ -1,0 +1,9 @@
+{
+  "roster_review": { "passed": false, "evidence": "Partial historical backfill only; complete roster and independent two-person review remain outstanding.", "verified_at": null },
+  "auth_review": { "passed": false, "evidence": "Confirm public sign-ups are disabled and only intended editor accounts have the admin role.", "verified_at": null },
+  "api_eval": { "passed": false, "evidence": "API-backed eval required. Cached Claude CLI metrics are indicative only.", "verified_at": null },
+  "agent_72h_dry_run": { "passed": false, "evidence": "Record start/end timestamps, workflow links for at least 72 hours, and manual assessment of zero false Confirmed decisions.", "verified_at": null },
+  "publisher_terms": { "passed": false, "evidence": "Complete the outstanding publisher terms reviews in agent/sources.ts.", "verified_at": null },
+  "backup_restore": { "passed": false, "evidence": "Record production backup/export policy and a successful restore rehearsal in an isolated database.", "verified_at": null },
+  "cost_review": { "passed": false, "evidence": "Record hosting/database plans and observed token usage with a monthly estimate against the project budget.", "verified_at": null }
+}

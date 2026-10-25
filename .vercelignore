@@ -1,0 +1,7 @@
+.git
+.env*
+!.env.example
+.agent-cache
+eval/.cache
+supabase/seed/drafts
+*.log

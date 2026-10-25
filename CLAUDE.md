@@ -30,7 +30,7 @@ Update the tracker below when a milestone is accepted.
 | 4 | Scheduling + orchestration | ✅ |
 | 5 | Dashboard UI | ✅ |
 | 6 | Realtime + alerts | ✅ |
-| 7 | Admin review | ☐ |
+| 7 | Admin review | Implemented; awaiting acceptance. API eval requires an Anthropic key; cached Claude CLI eval passes. |
 | 8 | Deploy + launch | ☐ |
 
 At each major decision not already settled in SPEC.md §3.1, briefly weigh 2–3 options against cost, complexity and timeline, then pick one. Record the decision in SPEC.md.
@@ -66,7 +66,9 @@ npm run eval                        # detection eval (AGENT.md §7); add -- --ve
 npm run eval -- --llm=claude-cli    # eval via `claude -p` on your Claude login (indicative only; add --claude-bin=<path>)
 npm run seed -- --file supabase/seed/legislators.fictional.csv --fictional [--dry-run]
 npm run seed -- --demo-mode on|off  # show/hide fictional rows (app_settings.demo_mode)
-npm run seed -- --demo-events [--dry-run]   # publish fictional demo defections (idempotent) and turn demo mode on
+npm run seed -- --demo-events [--dry-run]   # sourced historical Senate + House backfill; hides fictional records
+npm run seed -- --fictional-events [--dry-run]   # synthetic development events only
+npm run seed:historical -- [--dry-run]   # same historical import, optional --file <json>
 npm run build-map -- <geoBoundaries-NGA-ADM1_simplified.geojson>   # rebuild public/maps/ng-states.topo.json
 npm run admin -- --grant <email> | --revoke <email> | --list    # admin role (app_metadata.role); create the user in the dashboard first
 npx supabase@latest db push --db-url "<session-pooler connection string>"   # apply migrations
@@ -113,7 +115,7 @@ tests/db/               SQL tests on PGlite: harness.ts, supabase-shim.sql, fixt
 ## Non-negotiable domain rules
 
 1. **Never publish rumours as fact.** Party counts change only through `publish_defection`, and only for events in the `published` status. Unverified alerts never change counts.
-2. **Never invent real-world data.** No real legislator names in prompts, few-shot examples, fixtures used as examples, demo seeds or UI copy. Use clearly fictional names (`is_fictional = true`). Never hard-code current party seat numbers. Counts come from the database.
+2. **Never invent real-world data.** Prompts, few-shot examples and synthetic test fixtures use clearly fictional names (`is_fictional = true`). The user requested real historical demo data on 25 October 2026: sourced records belong in `supabase/seed/defections.historical.json` with `is_fictional = false`, imported through `seed_historical_events`. Consult `docs/HISTORICAL_DATA.md` before extending that dataset; retain its coverage gaps and provenance. Never hard-code current party seat numbers. Counts come from the database; partial roster totals must be labelled as partial.
 3. **Every event is traceable:** source URL(s), outlet, timestamps, a verbatim evidence quote, model ID and `PROMPT_VERSION`.
 4. **Article text is untrusted** LLM input. Wrap it in `<article>` tags and give the model no tools: its reply is constrained to the output schema (structured outputs, AGENT.md §4.2). Validate output with Zod. Check that evidence quotes are verbatim.
 5. **Don't republish articles.** Clients see the headline, a quote of ≤ 300 characters and a link. `articles.content` is never exposed to anon users.

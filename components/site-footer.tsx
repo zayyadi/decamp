@@ -1,4 +1,5 @@
 import { ThemeToggle } from "./theme";
+import Link from "next/link";
 
 export function SiteFooter() {
   return (
@@ -16,6 +17,7 @@ export function SiteFooter() {
           </p>
         </div>
         <div className="space-y-3 text-sm md:justify-self-end">
+          <Link href="/about" className="block font-medium text-white underline underline-offset-4">Methodology and corrections</Link>
           <p className="font-medium text-white">Theme</p>
           <ThemeToggle />
         </div>
