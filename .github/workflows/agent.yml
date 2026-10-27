@@ -40,7 +40,13 @@ jobs:
 
       # robots.txt answers are kept for 24 h (AGENT.md §2). Each run saves a
       # new cache entry and restores the latest one.
-      - uses: actions/cache@v4
+      # Only for AGENT_LLM_BACKEND=claude-cli: classification runs `claude -p`
+      # on the Claude subscription behind CLAUDE_CODE_OAUTH_TOKEN.
+      - name: Install Claude Code
+        if: vars.AGENT_LLM_BACKEND == 'claude-cli'
+        run: npm install -g @anthropic-ai/claude-code@2.1.311
+
+      - uses: actions/cache@v5
         with:
           path: .agent-cache
           key: agent-cache-${{ github.run_id }}
@@ -51,6 +57,8 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          AGENT_LLM_BACKEND: ${{ vars.AGENT_LLM_BACKEND }}
           AGENT_CONTACT_URL: ${{ vars.AGENT_CONTACT_URL }}
           # Optional; lib/env.ts supplies the defaults when these are unset.
           CLASSIFIER_MODEL: ${{ vars.CLASSIFIER_MODEL }}
@@ -59,7 +67,8 @@ jobs:
           CONFIDENCE_REVIEW: ${{ vars.CONFIDENCE_REVIEW }}
           AGENT_LOOKBACK_HOURS: ${{ vars.AGENT_LOOKBACK_HOURS }}
           AGENT_MAX_LLM_CALLS_PER_RUN: ${{ vars.AGENT_MAX_LLM_CALLS_PER_RUN }}
-          # Scheduled runs have no inputs: full and live.
+          # Scheduled runs have no inputs: live, and full unless model credentials are missing.
           STAGE: ${{ inputs.stage || 'all' }}
-          DRY_RUN: ${{ inputs.dry_run && '--dry-run' || '' }}
-        run: npm run agent -- --stage="$STAGE" $DRY_RUN
+          DRY_RUN: ${{ inputs.dry_run && 'true' || 'false' }}
+        # Falls back to ingest-only on schedules without model credentials; see the script.
+        run: bash scripts/ci/run-agent.sh

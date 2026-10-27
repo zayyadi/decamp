@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import type { LlmRequest } from "@/agent/classify/classify";
-import { claudeCliLlm, cliArgs, renderPrompt, type Runner } from "@/eval/claude-cli";
+import { claudeCliLlm, cliArgs, renderPrompt, type Runner } from "@/agent/classify/claude-cli";
 
 const request: LlmRequest = {
   model: "claude-haiku-5-5",

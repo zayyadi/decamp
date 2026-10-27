@@ -26,10 +26,19 @@ describe("agent workflow", () => {
   });
 
   it("keeps keys in secrets, not plain variables", () => {
-    for (const name of ["SUPABASE_SECRET_KEY", "ANTHROPIC_API_KEY"]) expect(workflow).toContain(`secrets.${name}`);
+    for (const name of ["SUPABASE_SECRET_KEY", "ANTHROPIC_API_KEY", "CLAUDE_CODE_OAUTH_TOKEN"]) expect(workflow).toContain(`secrets.${name}`);
+  });
+
+  it("installs Claude Code only for the claude-cli backend, and runs the tested step script", () => {
+    expect(workflow).toMatch(/if: vars\.AGENT_LLM_BACKEND == 'claude-cli'\n\s+run: npm install -g @anthropic-ai\/claude-code@\d+\.\d+\.\d+/);
+    expect(workflow).toContain("run: bash scripts/ci/run-agent.sh");
   });
 
   it("documents each variable in the README", () => {
     for (const name of agentVars) expect(readme, name).toContain(`\`${name}\``);
+  });
+
+  it("runs schedules live and manual runs as their dry-run checkbox says", () => {
+    expect(workflow).toContain("DRY_RUN: ${{ inputs.dry_run && 'true' || 'false' }}");
   });
 });

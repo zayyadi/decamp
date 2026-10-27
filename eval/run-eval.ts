@@ -12,7 +12,7 @@ import { getAgentEnv } from "@/lib/env";
 import { loadLocalEnv } from "@/scripts/lib/load-env";
 import { parseRosterCsv } from "@/scripts/lib/roster-csv";
 import { BACKENDS, cachedLlm, type Backend, type CacheStats } from "./cache";
-import { claudeCliLlm } from "./claude-cli";
+import { claudeCliLlm } from "@/agent/classify/claude-cli";
 import { computeMetrics, meetsTargets, TARGETS, type FixtureOutcome, type PredictedEvent } from "./metrics";
 
 // Detection eval (AGENT.md §7): classify → resolve → score → route on fixed
