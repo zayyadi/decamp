@@ -451,7 +451,7 @@ Alerts are idempotent: there is at most one alert per (`event_id`, `level`).
   - Per-class F1 (reported; no hard gate)
 - **Regression rule:** any change to the prompt, examples, model, thresholds or resolver must run the eval. If it changes the prompt, bump `PROMPT_VERSION` and paste the metrics into the PR or commit message.
 - Cache LLM responses during eval, keyed on (model, prompt_version, article hash, backend), under `eval/.cache/` (gitignored). Each entry records its backend (`via`).
-- **Backends:** `--llm=api` (default) calls the Messages API with `ANTHROPIC_API_KEY`, exactly as the agent does. `--llm=claude-cli` runs `claude -p` on the developer's Claude account login (`--claude-bin=<path>` if `claude` is not on the PATH): no tools, no settings, an empty working directory, the same models, effort, system prompt and JSON schema. It differs from production in three ways: Claude Code prepends its own system-prompt preamble, structured output arrives through a tool call rather than `output_config.format`, and a validation retry is sent as one prompt quoting the rejected answer. Its results are printed with a notice and cached apart from API answers. They are indicative only; **the gate above is met only by an `--llm=api` run.**
+- **Backends:** `--llm=api` (default) calls the Messages API with `ANTHROPIC_API_KEY`, exactly as the agent does. `--llm=claude-cli` runs `claude -p` on the developer's Claude account login (`--claude-bin=<path>` if `claude` is not on the PATH): no tools, no settings, an empty working directory, the same models, effort, system prompt and JSON schema. It differs from production in three ways: Claude Code prepends its own system-prompt preamble, structured output arrives through a tool call rather than `output_config.format`, and a validation retry is sent as one prompt quoting the rejected answer. Its results are printed with a notice and cached apart from API answers. They are indicative only; **the gate above is met only by an `--llm=api` run.** The agent can run on the same backend in production (`AGENT_LLM_BACKEND=claude-cli`, §9); its client is `agent/classify/claude-cli.ts`.
 
 ---
 
@@ -473,7 +473,9 @@ Every rejection or edit is written to `review_feedback` (event snapshot, correct
 
 | Var | Default | Purpose |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | (none) | Claude API |
+| `AGENT_LLM_BACKEND` | `api` | `api`: Messages API with `ANTHROPIC_API_KEY`. `claude-cli`: `claude -p` on a Claude subscription (local login, or `CLAUDE_CODE_OAUTH_TOKEN` in CI); no tools, same models, effort, prompt and schema (see §7, Backends) |
+| `ANTHROPIC_API_KEY` | (none) | Claude API; required for `AGENT_LLM_BACKEND=api` |
+| `CLAUDE_CODE_OAUTH_TOKEN` | (none) | CI only, for `claude-cli`: subscription token from `claude setup-token`, read by Claude Code itself |
 | `CLASSIFIER_MODEL` | `claude-haiku-5-5` | First pass |
 | `ESCALATION_MODEL` | `claude-sonnet-5-5` | Ambiguous cases |
 | `CONFIDENCE_PUBLISH` | `0.85` | Auto-publish threshold |

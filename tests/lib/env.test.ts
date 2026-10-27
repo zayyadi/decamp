@@ -79,6 +79,20 @@ describe("getAgentEnv", () => {
     });
   });
 
+  it("uses the API backend by default, which needs an API key", () => {
+    expect(getAgentEnv(agentVars).AGENT_LLM_BACKEND).toBe("api");
+    expect(() => getAgentEnv({ ...agentVars, ANTHROPIC_API_KEY: undefined })).toThrow(
+      /ANTHROPIC_API_KEY: required when AGENT_LLM_BACKEND=api/,
+    );
+  });
+
+  it("classifies with a Claude login and no API key on the claude-cli backend", () => {
+    const env = getAgentEnv({ ...agentVars, ANTHROPIC_API_KEY: "", AGENT_LLM_BACKEND: "claude-cli" });
+    expect(env.AGENT_LLM_BACKEND).toBe("claude-cli");
+    expect(env.ANTHROPIC_API_KEY).toBeUndefined();
+    expect(() => getAgentEnv({ ...agentVars, AGENT_LLM_BACKEND: "openai" })).toThrow(/AGENT_LLM_BACKEND/);
+  });
+
   it("coerces numeric overrides", () => {
     const env = getAgentEnv({ ...agentVars, CONFIDENCE_PUBLISH: "0.9" });
     expect(env.CONFIDENCE_PUBLISH).toBe(0.9);
