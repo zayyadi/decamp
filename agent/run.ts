@@ -4,6 +4,7 @@ import { getAgentEnv, getIngestEnv, getRunLogEnv } from "@/lib/env";
 import { createServiceClient } from "@/lib/supabase/service";
 import { loadLocalEnv } from "@/scripts/lib/load-env";
 import { anthropicLlm } from "./classify/classify";
+import { claudeCliLlm } from "./classify/claude-cli";
 import { buildSystemPrompt } from "./classify/prompt";
 import { classifierOutputSchema } from "./classify/schema";
 import { detect, type DetectResult, type PendingArticle } from "./detect";
@@ -156,7 +157,7 @@ async function main(): Promise<number> {
     // Without the page there is nothing to debug, and classifying every pending article instead would surprise.
     console.log(`Not classifying: ${values.article} could not be ingested.`);
   } else if (agentEnv) {
-    models = `${agentEnv.CLASSIFIER_MODEL} → ${agentEnv.ESCALATION_MODEL}`;
+    models = `${agentEnv.CLASSIFIER_MODEL} → ${agentEnv.ESCALATION_MODEL} via ${agentEnv.AGENT_LLM_BACKEND === "claude-cli" ? "claude -p (Claude login)" : "API"}`;
     try {
       const parties = await loadParties(db);
       const realDetect = supabaseDetectStore(db, parties);
@@ -165,7 +166,7 @@ async function main(): Promise<number> {
           store: dryRun ? dryRunDetectStore(realDetect) : realDetect,
           roster: await loadRoster(db, parties),
           classify: {
-            llm: anthropicLlm(),
+            llm: agentEnv.AGENT_LLM_BACKEND === "claude-cli" ? claudeCliLlm() : anthropicLlm(),
             classifierModel: agentEnv.CLASSIFIER_MODEL,
             escalationModel: agentEnv.ESCALATION_MODEL,
             system: buildSystemPrompt(parties),

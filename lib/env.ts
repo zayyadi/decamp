@@ -37,7 +37,10 @@ const ingestSchema = serviceSchema.extend({
 
 const agentSchema = ingestSchema
   .extend({
-    ANTHROPIC_API_KEY: z.string().min(1),
+    // `claude-cli` classifies through `claude -p` on a Claude subscription
+    // (a local login, or CLAUDE_CODE_OAUTH_TOKEN in CI) instead of an API key.
+    AGENT_LLM_BACKEND: z.enum(["api", "claude-cli"]).default("api"),
+    ANTHROPIC_API_KEY: z.string().min(1).optional(),
     CLASSIFIER_MODEL: z.string().min(1).default("claude-haiku-5-5"),
     ESCALATION_MODEL: z.string().min(1).default("claude-sonnet-5-5"),
     CONFIDENCE_PUBLISH: threshold(0.85),
@@ -47,6 +50,10 @@ const agentSchema = ingestSchema
   .refine((env) => env.CONFIDENCE_REVIEW < env.CONFIDENCE_PUBLISH, {
     message: "CONFIDENCE_REVIEW must be lower than CONFIDENCE_PUBLISH",
     path: ["CONFIDENCE_REVIEW"],
+  })
+  .refine((env) => env.AGENT_LLM_BACKEND !== "api" || env.ANTHROPIC_API_KEY, {
+    message: "required when AGENT_LLM_BACKEND=api; set AGENT_LLM_BACKEND=claude-cli to classify with a Claude login instead",
+    path: ["ANTHROPIC_API_KEY"],
   });
 
 // Set by GitHub Actions; absent locally, where the run log only goes to stdout.

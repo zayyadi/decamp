@@ -40,7 +40,13 @@ jobs:
 
       # robots.txt answers are kept for 24 h (AGENT.md §2). Each run saves a
       # new cache entry and restores the latest one.
-      - uses: actions/cache@v4
+      # Only for AGENT_LLM_BACKEND=claude-cli: classification runs `claude -p`
+      # on the Claude subscription behind CLAUDE_CODE_OAUTH_TOKEN.
+      - name: Install Claude Code
+        if: vars.AGENT_LLM_BACKEND == 'claude-cli'
+        run: npm install -g @anthropic-ai/claude-code@2.1.311
+
+      - uses: actions/cache@v5
         with:
           path: .agent-cache
           key: agent-cache-${{ github.run_id }}
@@ -51,6 +57,8 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          AGENT_LLM_BACKEND: ${{ vars.AGENT_LLM_BACKEND }}
           AGENT_CONTACT_URL: ${{ vars.AGENT_CONTACT_URL }}
           # Optional; lib/env.ts supplies the defaults when these are unset.
           CLASSIFIER_MODEL: ${{ vars.CLASSIFIER_MODEL }}
@@ -62,12 +70,13 @@ jobs:
           # Keep schedules read-only until the launch rehearsal is approved.
           # Manual runs still follow the explicit dry_run input.
           STAGE: ${{ inputs.stage || 'all' }}
-          DRY_RUN: ${{ ((github.event_name == 'schedule' && vars.AGENT_LIVE_ENABLED != 'true') || (github.event_name == 'workflow_dispatch' && inputs.dry_run)) && '--dry-run' || '' }}
-        run: npm run agent -- --stage="$STAGE" $DRY_RUN | tee agent-run.log
+          DRY_RUN: ${{ ((github.event_name == 'schedule' && vars.AGENT_LIVE_ENABLED != 'true') || (github.event_name == 'workflow_dispatch' && inputs.dry_run)) && 'true' || 'false' }}
+        # Falls back to ingest-only on schedules without model credentials; see the script.
+        run: bash scripts/ci/run-agent.sh
 
       - name: Retain rehearsal logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: agent-run-${{ github.run_id }}
           path: agent-run.log

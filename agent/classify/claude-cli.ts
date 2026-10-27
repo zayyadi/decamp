@@ -6,13 +6,14 @@ import type Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import type { LlmClient } from "@/agent/classify/classify";
 
-// Eval-only LLM client that runs `claude -p` on the developer's Claude account
-// login instead of calling the Messages API with ANTHROPIC_API_KEY. It is not
-// the production path: Claude Code adds its own preamble to the system prompt,
-// returns structured output through a tool call rather than
+// LLM client that runs `claude -p` on a Claude subscription instead of
+// calling the Messages API with ANTHROPIC_API_KEY (AGENT_LLM_BACKEND=claude-cli,
+// and the eval's --llm=claude-cli). Locally it uses the developer's login; in
+// CI, Claude Code reads CLAUDE_CODE_OAUTH_TOKEN (from `claude setup-token`).
+// It differs from the API path: Claude Code adds its own preamble to the
+// system prompt, returns structured output through a tool call rather than
 // `output_config.format`, and can't replay a multi-turn conversation (see
-// renderPrompt). Its answers are cached under their own key (eval/cache.ts) so
-// an API run never reuses them.
+// renderPrompt). The model still gets no tools and must answer in the schema.
 
 export type Runner = (
   bin: string,
