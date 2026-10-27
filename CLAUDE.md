@@ -71,6 +71,7 @@ npm run seed -- --fictional-events [--dry-run]   # synthetic development events 
 npm run seed:historical -- [--dry-run]   # same historical import, optional --file <json>
 npm run build-map -- <geoBoundaries-NGA-ADM1_simplified.geojson>   # rebuild public/maps/ng-states.topo.json
 npm run admin -- --grant <email> | --revoke <email> | --list    # admin role (app_metadata.role); create the user in the dashboard first
+sudo bash deploy/release.sh <ref> | --rollback   # on the VPS, after deploy/bootstrap.sh (docs/VPS.md)
 npx supabase@latest db push --db-url "<session-pooler connection string>"   # apply migrations
 npx supabase@latest gen types typescript --project-id <ref> > lib/database.types.ts
 ```
@@ -101,6 +102,7 @@ agent/
   resolve/              normalize.ts, variants.ts, similarity.ts, match.ts
   corroborate.ts  score.ts  route.ts  assess.ts (pure: plan + score + route)
   detect.ts             classify stage (store injected)   publish.ts (Supabase store, publish_defection)
+deploy/                 VPS: bootstrap.sh (one-time setup), release.sh (build, switch, health gate, rollback), decamp.service, nginx.conf, web.env.example; see docs/VPS.md
 supabase/migrations/    SQL migrations (timestamped; never edit an applied one). States + parties live here
 supabase/seed/          legislators.fictional.csv, legislators.template.csv, README.md (column reference)
 scripts/                seed-roster.ts, build-map.ts, admin.ts, lib/ (roster-csv.ts, load-env.ts, demo-events.ts)

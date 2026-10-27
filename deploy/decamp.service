@@ -9,7 +9,9 @@ User=decamp
 Group=decamp
 WorkingDirectory=/srv/decamp/current
 Environment=NODE_ENV=production
-ExecStart=/usr/bin/node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3000
+# Loopback only; Nginx proxies to it. deploy/bootstrap.sh rewrites the port
+# if --port is given (the VPS is shared with other sites).
+ExecStart=/usr/bin/node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100
 Restart=on-failure
 RestartSec=5
 KillSignal=SIGTERM
