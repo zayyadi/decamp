@@ -10,10 +10,11 @@ export default function AboutPage() {
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-10 sm:px-6">
       <PageHeading eyebrow="About DecampWatch NG" title="Methodology and corrections">
-        Tracking completed party changes in Nigeria&apos;s 10th National Assembly, with evidence you can inspect.
+        Tracking completed party changes in Nigeria&apos;s 10th National Assembly and its State Houses of Assembly, with evidence you can inspect.
       </PageHeading>
       <SectionCard title="What we track">
-        <p>We cover the Senate and House of Representatives from the term that began on 13 June 2023. State assemblies, governors, candidates and former members&apos; subsequent party changes are outside this scope. A historical move by someone who later left office can remain in the record.</p>
+        <p>We cover the Senate and House of Representatives from the term that began on 13 June 2023, and, in a separate <Link className="font-medium text-highlight underline underline-offset-4" href="/assemblies">State Assemblies</Link> section, members of the 36 State Houses of Assembly. Assembly figures are never added to National Assembly counts. Governors, candidates and former members&apos; subsequent party changes are outside this scope. A historical move by someone who later left office can remain in the record.</p>
+        <p className="mt-3">State-assembly coverage is new. An editor checks every state-assembly report before it appears, and assembly members are recorded as their defections are confirmed, so we don&apos;t yet show assembly seat totals.</p>
         <p className="mt-3">Our historical preview is a partial, sourced backfill. Party strength reflects the members and affiliation histories recorded in our database; it is not a full chamber census. Missing records do not mean no defection occurred. The dashboard coverage notice identifies the latest included historical event.</p>
       </SectionCard>
       <SectionCard title="How a report becomes a record">

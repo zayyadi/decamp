@@ -16,7 +16,7 @@ export interface GateInput {
   anyQuoteVerbatim: boolean;
 }
 
-const GATING_FLAGS = new Set(["ambiguous_entity", "unresolved_entity", "party_mismatch", "denied"]);
+const GATING_FLAGS = new Set(["ambiguous_entity", "unresolved_entity", "party_mismatch", "denied", "state_assembly"]);
 
 /** Every hard gate that fires. Any one sends the event to review. */
 export function hardGates(input: GateInput): string[] {

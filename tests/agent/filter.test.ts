@@ -24,6 +24,8 @@ describe("pre-filter", () => {
     "Speaker reads letter as member crosses over to APC",
     "Senator resigns his membership of the party",
     "Lawmaker joins All Progressives Congress",
+    "Kano House of Assembly member dumps PDP for APC",
+    "Member representing Fagge state constituency joins the ADC",
   ])("passes %j", (title) => {
     expect(passes({ title, summary: longSummary("") })).toBe(true);
   });

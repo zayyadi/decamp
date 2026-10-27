@@ -1,0 +1,15 @@
+{
+  "id": "state-04-lga-chairman",
+  "article": {
+    "title": "Council chairman defects to ADC",
+    "outlet": "Example Times",
+    "url": "https://example.org/state-04-lga-chairman",
+    "published_at": "2026-07-08",
+    "tier": 1,
+    "text": "The chairman of Ido-Fictional Local Government Area in Oyo State, Hon. Kayode Bamidele-Fictional, has defected from the APC to the African Democratic Congress, alongside several councillors."
+  },
+  "expected": {
+    "classification": "NON_LEGISLATOR_DEFECTION",
+    "legislators": []
+  }
+}

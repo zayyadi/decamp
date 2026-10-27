@@ -8,7 +8,7 @@ export interface RosterEntry {
   id: string;
   fullName: string;
   nameVariants: string[];
-  chamber: "senate" | "house";
+  chamber: "senate" | "house" | "state_assembly";
   state: string;
   constituency: string;
   /** Party code, or null if the roster has none. */
@@ -19,7 +19,7 @@ export interface RosterEntry {
 
 export interface MatchQuery {
   name: string;
-  chamber: "senate" | "house" | "unknown";
+  chamber: "senate" | "house" | "state_assembly" | "unknown";
   state: string | null;
   constituency: string | null;
   fromParty: string | null;
@@ -109,7 +109,19 @@ function ranked(query: MatchQuery, queryTokens: string[], roster: RosterEntry[])
     .sort((a, b) => b.score - a.score);
 }
 
+/**
+ * State-assembly defections always go to review in phase 1 (SPEC §3.1): the
+ * assembly roster is still growing, so a match there is weaker evidence.
+ */
 export function matchLegislator(query: MatchQuery, roster: RosterEntry[]): MatchResult {
+  const result = matchAmongRoster(query, roster);
+  if (query.chamber === "state_assembly" || result.legislator?.chamber === "state_assembly") {
+    return { ...result, flags: [...result.flags, "state_assembly"] };
+  }
+  return result;
+}
+
+function matchAmongRoster(query: MatchQuery, roster: RosterEntry[]): MatchResult {
   const queryTokens = nameTokens(query.name);
   const sitting = ranked(query, queryTokens, roster.filter((r) => r.status === "sitting"));
   const former = ranked(query, queryTokens, roster.filter((r) => r.status !== "sitting"));

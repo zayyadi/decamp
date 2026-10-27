@@ -32,6 +32,7 @@ Update the tracker below when a milestone is accepted.
 | 6 | Realtime + alerts | ✅ |
 | 7 | Admin review | Implemented; awaiting acceptance. API eval requires an Anthropic key; cached Claude CLI eval passes. |
 | 8 | Deploy + launch | ☐ |
+| 9 | State Houses of Assembly (phase 1) | Implemented; awaiting acceptance |
 
 At each major decision not already settled in SPEC.md §3.1, briefly weigh 2–3 options against cost, complexity and timeline, then pick one. Record the decision in SPEC.md.
 
@@ -89,7 +90,7 @@ Env vars are documented in `.env.example`. Keep it complete; it is checked in. `
 ## Layout
 
 ```
-app/                    Next.js routes (/, /legislators, /legislators/[id], /events/[id], /admin/login, /admin/(console)/{review,published,runs}, /about); admin/actions.ts (server actions)
+app/                    Next.js routes (/, /legislators, /legislators/[id], /events/[id], /assemblies, /assemblies/[state], /admin/login, /admin/(console)/{review,published,runs}, /about); admin/actions.ts (server actions)
 proxy.ts                session refresh + signed-out redirect for /admin (optimistic; pages, actions and SQL re-check)
 components/             UI (charts/, map/, filters/, alerts/ (live-updates: Realtime + toasts; live-alert-feed), ui/ from shadcn); badges, section-card, site-header/footer, theme
 lib/                    env.ts (validated env), supabase clients (server, browser, service), auth.ts (session DAL), review.ts (pure admin helpers), queries/ (Zod-validated reads; admin.ts uses the admin session), realtime.ts (payload parsing, feed merge), filters.ts (URL state), format.ts, clock.ts, parties.ts (colours)

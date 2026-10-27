@@ -98,6 +98,18 @@ export const examples: FewShotExample[] = [
       "Senator Barnabas Okeyode, who defected to the APC last year, on Thursday sponsored a bill on coastal erosion.",
     analysis: `act_status "historical_mention". classification IRRELEVANT, certainty 0.9, legislators [].`,
   },
+  {
+    id: 10,
+    classification: "FORMAL_PLENARY_ANNOUNCEMENT",
+    published: "2026-08-20",
+    article:
+      "The member representing Fagge Fictional State Constituency in the Kano State House of Assembly, Hon. Yakubu Tanko-Fictional, on Wednesday dumped the NNPP for the APC. The Speaker read his letter of defection during plenary.",
+    analysis: `roles ["state_legislator"], act_status "completed", plenary true. classification
+  FORMAL_PLENARY_ANNOUNCEMENT, certainty 0.93. legislators: [{name_as_written "Hon. Yakubu Tanko-Fictional",
+  chamber "state_assembly", state "Kano", constituency "Fagge Fictional", from_party "NNPP", to_party "APC",
+  event_date "2026-08-19", date_basis "relative_resolved", evidence_type "plenary_letter",
+  evidence_quote "The Speaker read his letter of defection during plenary."}]`,
+  },
 ];
 
 export function renderExamples(list: FewShotExample[] = examples): string {

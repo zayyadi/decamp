@@ -49,7 +49,7 @@ export function classifierOutputSchema(partyCodes: readonly string[]) {
 
   const legislator = z.object({
     name_as_written: z.string().min(1),
-    chamber: z.enum(["senate", "house", "unknown"]),
+    chamber: z.enum(["senate", "house", "state_assembly", "unknown"]),
     state: z.string().nullable(),
     constituency: z.string().nullable(),
     from_party: party,

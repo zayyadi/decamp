@@ -81,6 +81,21 @@ describe("variants", () => {
 
 describe("matchLegislator", () => {
   const roster = fictionalRoster();
+
+  it("flags every state-assembly query so it goes to review, matched or not", () => {
+    const assembly = [{ ...roster[0], id: "sa-1", chamber: "state_assembly" as const, fullName: "Yakubu Tanko", nameVariants: [] }];
+    const matched = matchLegislator(q({ name: "Hon. Yakubu Tanko", chamber: "state_assembly", state: roster[0].state }), assembly);
+    expect(matched.status).toBe("UNIQUE");
+    expect(matched.flags).toContain("state_assembly");
+    const unknown = matchLegislator(q({ name: "Hon. Nobody Here", chamber: "state_assembly", state: "Kano" }), roster);
+    expect(unknown.status).toBe("NO_MATCH");
+    expect(unknown.flags).toEqual(["unresolved_entity", "state_assembly"]);
+  });
+
+  it("never matches a federal query to a state-assembly member", () => {
+    const assembly = [{ ...roster[0], chamber: "state_assembly" as const }];
+    expect(matchLegislator(q({ name: roster[0].fullName, chamber: "senate", state: roster[0].state }), assembly).status).toBe("NO_MATCH");
+  });
   const q = (over: Partial<MatchQuery>): MatchQuery => ({
     name: "",
     chamber: "unknown",

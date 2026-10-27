@@ -36,7 +36,8 @@ export async function listLegislators(q: LegislatorQuery): Promise<LegislatorRow
         "elected_party:parties!legislators_elected_party_id_fkey(code)",
     )
     .eq("status", "sitting");
-  if (q.chamber) query = query.eq("chamber", q.chamber);
+  // The roster page is the National Assembly; assembly members are listed per state (listAssemblyMembers).
+  query = q.chamber ? query.eq("chamber", q.chamber) : query.in("chamber", ["senate", "house"]);
   if (q.state) query = query.eq("state", q.state);
   if (q.party) query = query.eq("current_party.code", q.party);
   if (q.q) query = query.ilike("full_name", `%${likeEscape(q.q)}%`);
@@ -104,4 +105,27 @@ export async function getLegislator(id: string): Promise<Profile | null> {
   const row = parseRows(profileRow.nullable(), legislator, "legislator");
   if (!row) return null;
   return { ...row, history: parseRows(historyRows, history, "party_affiliations") };
+}
+
+const assemblyRows = z.array(
+  z.object({
+    id: z.string(),
+    full_name: z.string(),
+    constituency: z.string(),
+    current_party: party,
+  }),
+);
+export type AssemblyMember = z.infer<typeof assemblyRows>[number];
+
+/** State-assembly members on record for a state. Partial in phase 1: members join the roster through review. */
+export async function listAssemblyMembers(state: string): Promise<AssemblyMember[]> {
+  const db = await createAnonClient();
+  const result = await db
+    .from("legislators")
+    .select("id, full_name, constituency, current_party:parties!legislators_current_party_id_fkey(code, name, color)")
+    .eq("chamber", "state_assembly")
+    .eq("state", state)
+    .eq("status", "sitting")
+    .order("constituency");
+  return parseRows(assemblyRows, result, "assembly members");
 }

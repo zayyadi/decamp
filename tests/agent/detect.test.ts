@@ -307,6 +307,28 @@ describe("detect", () => {
     expect(store.alerts.size).toBe(0);
   });
 
+  it("sends a state-assembly defection to review with its state, even when the report is strong", async () => {
+    const assembly = output({
+      classification: "FORMAL_PLENARY_ANNOUNCEMENT",
+      legislators: [
+        legislator({ name_as_written: "Hon. Yakubu Tanko-Fictional", chamber: "state_assembly", state: "Kano", constituency: "Fagge", evidence_type: "plenary_letter" }),
+      ],
+    });
+    const r = await detect(deps({ "Story 1": assembly }), [article(1, "tierone")]);
+    expect(r.events_published).toBe(0);
+    const [event] = store.events.values();
+    expect(event).toMatchObject({ status: "in_review", legislatorId: null });
+    expect(event.row).toMatchObject({ chamber: "state_assembly", state: "Kano" });
+    expect(event.flags).toEqual(expect.arrayContaining(["unresolved_entity", "state_assembly"]));
+  });
+
+  it("stores no state an editor would have to undo when the article's state isn't a real one", async () => {
+    const odd = output({ legislators: [legislator({ name_as_written: "Hon. Nobody-Fictional", chamber: "state_assembly", state: "Kano State" })] });
+    await detect(deps({ "Story 1": odd }), [article(1, "tierone")]);
+    const [event] = store.events.values();
+    expect(event.row).toMatchObject({ chamber: "state_assembly", state: null });
+  });
+
   it("flags a quote that is not in the article", async () => {
     const paraphrase = output({ legislators: [legislator({ evidence_quote: "I am now in the APC" })] });
     await detect(deps({ "Story 1": paraphrase }), [article(1, "tierone")]);

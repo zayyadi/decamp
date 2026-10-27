@@ -7,7 +7,7 @@
 
 ## 1. Summary
 
-DecampWatch NG is a web app that tracks party defections ("decamping") by sitting members of Nigeria's 10th National Assembly (Senate: 109, House of Representatives: 360). A scheduled AI agent reads Nigerian political news, detects **completed** defections of **sitting** legislators, scores its confidence, and records each event with its sources. Once an event is published, the dashboard updates in real time and an alert appears in the app, labelled **Confirmed** or **Unverified**.
+DecampWatch NG is a web app that tracks party defections ("decamping") by sitting members of Nigeria's 10th National Assembly (Senate: 109, House of Representatives: 360). Since Milestone 9 it also tracks members of the 36 **State Houses of Assembly**, in their own section and never mixed into National Assembly counts. A scheduled AI agent reads Nigerian political news, detects **completed** defections of **sitting** legislators, scores its confidence, and records each event with its sources. Once an event is published, the dashboard updates in real time and an alert appears in the app, labelled **Confirmed** or **Unverified**.
 
 The guiding principle is **precision over speed**. A false alert costs more credibility than a late one, so rumours are never published as fact.
 
@@ -100,6 +100,9 @@ The guiding principle is **precision over speed**. A false alert costs more cred
 | Merge semantics (M7) | Delete the duplicate · close it | **Sources move to the target; the duplicate becomes `rejected` with reason `duplicate` and a note naming the target** | Keeps the audit trail; nothing is deleted |
 | Production LLM without an API key (M4, revisited 27 Oct 2026) | Wait for an API key · pause the schedule · classify via `claude -p` on a Claude subscription | **`AGENT_LLM_BACKEND=claude-cli`: the agent runs `claude -p` (no tools, same schema) with Claude Code's `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token`; the API backend stays the default. Scheduled runs without credentials for the chosen backend fall back to ingest-only with a warning** | The owner has a subscription but no API key. Claude Code's token is its supported way to run in CI. Costs: shared subscription usage limits (failed calls leave articles pending for the next run) and Claude Code's preamble, so detection quality is the `--llm=claude-cli` eval's, not the API gate's. Supersedes "the cron agent can't use it" in the M3 row above |
 | VPS release process (M8) | Manual runbook · container (Docker) · scripted releases on the host | **`deploy/bootstrap.sh` once, then `deploy/release.sh <ref>`: build in a fresh folder as the `decamp` account, atomic symlink switch, `/api/health` gate with automatic switch-back, three releases kept** | The target (169.58.192.235) is shared with another site (`analytics.promisetracker.ng`), so the app gets its own Nginx site file and loopback port 3100 and never edits others; scripts remove the error-prone manual steps without adding a container runtime to a shared host |
+| State assemblies scope (M9) | Full rosters first · pilot a few states · phased, roster grows through review | **Phased: detection and review now, full sourced rosters later** (owner's choice, 27 Oct 2026) | ~990 members across 36 assemblies would delay everything; growing the roster through editor-confirmed defections keeps every row sourced. Cost: no assembly seat totals in phase 1, and every assembly report needs an editor |
+| State assemblies placement (M9) | One dashboard with a level filter · own section | **Own section (`/assemblies`)** | National counts stay comparable over time; national views count federal chambers only by default |
+| State-assembly routing (M9) | Same thresholds as federal · always review | **Always review (`state_assembly` hard gate)** | Without a seeded roster, a match is weaker evidence; an editor adds the member from a source. Revisit in phase 2 |
 | Crawl pacing (M2) | Fixed 1 req/s per host · honour `Crawl-delay` | **The larger of 1 s and the host's `Crawl-delay`** | Several outlets ask for 10–30 s; feeds change slowly, so the cost is only run time |
 
 Model IDs live in env vars (`CLASSIFIER_MODEL`, `ESCALATION_MODEL`) so they can change without code changes.
@@ -185,7 +188,7 @@ Enumerations are `text` columns with `check` constraints, not Postgres enums.
 | id | uuid PK | |
 | full_name | text | Canonical name, no honorifics |
 | name_variants | text[] | Spellings, nicknames, transliterations |
-| chamber | enum `senate` \| `house` | |
+| chamber | enum `senate` \| `house` \| `state_assembly` | `state_assembly` (M9) is never in the FCT, which has Area Councils instead |
 | state | text | One of the 36 states or `FCT` |
 | constituency | text | Senatorial district or federal constituency |
 | elected_party_id | smallint FK | Party on which they won |
@@ -238,7 +241,7 @@ Intervals are half-open, `[start_date, end_date)`: on the day a defection takes 
 | is_return | boolean | Returning to a former party |
 | event_date | date null | When the defection happened |
 | announced_date | date null | Plenary reading date, if any |
-| chamber, state | text | Denormalised for filters |
+| chamber, state | text | Denormalised for filters; chamber includes `state_assembly` (M9) |
 | reason_given | text null | |
 | confidence | numeric(4,3) | 0–1 (see AGENT.md §6) |
 | score_breakdown | jsonb | Factor values, for auditing |
@@ -287,6 +290,8 @@ Callers allowed for all write functions: the service role, an admin user (`publi
   - `from_party` is not the member's current party;
   - the event date precedes the current affiliation.
 - **`reverse_defection(event_id uuid, note text)`**: undoes `publish_defection` and inserts a `confirmed` alert titled "Correction: …". It only works on a legislator's most recent defection, and a note is required.
+- **`dashboard_events(chamber, party, state, from, to)`** and the aggregations built on it (`defection_kpis`, `party_flows`, `defections_by_state`, `defections_by_week`): with no chamber they count the **National Assembly only** (Senate and House); pass `state_assembly` for the state section (M9).
+- **`review_add_member(event_id, full_name, state, constituency, elected_party, term_start, source_url)`** (M9): admin or service role. Adds a sourced state-assembly member while reviewing an unmatched report and links the event; the member's pre-defection party becomes their current party. Refuses federal events, linked events, missing https sources and seats already held. Writes `review_feedback`.
 - **`party_strength(chamber text default null, as_of date default today)`**: returns a seat count per party at a date, built from `party_affiliations`. It runs as the caller, so RLS hides fictional seats from the public.
 - **`seed_roster(rows jsonb, fictional boolean)`**: service role only (§9).
 - **`set_demo_mode(on boolean)`**: service role only.
@@ -330,6 +335,8 @@ The full design is in [AGENT.md](../AGENT.md). Pipeline:
 | `/events/[id]` | Event detail: from → to, dates, evidence quotes, all sources, confidence label, correction history |
 | `/admin/review` | Auth-gated review queue |
 | `/about` | Methodology, source list, confidence labels, corrections policy, disclaimer |
+| `/assemblies` | State Houses of Assembly (M9): KPIs, map, party flows, timeline and recent defections for state-assembly members only, with a coverage note. No seat totals until full rosters exist |
+| `/assemblies/[state]` | One state's assembly: its confirmed defections and the members on record |
 
 ### 6.2 Overview components
 - **KPI cards:** total defections (in the filter range), defections in the last 7 days, the biggest net gainer, the biggest net loser.
@@ -425,6 +432,7 @@ Each milestone ends in a runnable, demonstrable state. Claude Code pauses after 
 | 6 | Realtime + alerts | Inserting a published event (via SQL or the admin panel) shows a toast and updates the charts in under 3 seconds with no refresh |
 | 7 | Admin review | Auth-gated queue with approve, edit and reject; approving calls `publish_defection`; reversal flow; `/admin/runs` page |
 | 8 | Deploy + launch | Deployed to a VPS with Supabase production; the launch checklist (§11) is complete |
+| 9 | State Houses of Assembly, phase 1 | `state_assembly` chamber in schema and agent (AGENT.md, `PROMPT_VERSION` bumped, eval passing); every state-assembly report goes to review, where an editor can add the member with a source and approve; `/assemblies` and per-state pages; national views unchanged; sourced 2023–date backfill drafted for review. Phase 2 (later): full sourced assembly rosters and seat totals |
 
 ---
 

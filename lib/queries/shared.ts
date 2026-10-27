@@ -11,4 +11,4 @@ export function parseRows<T>(schema: z.ZodType<T>, result: { data: unknown; erro
 
 // numeric and bigint come back as numbers or strings depending on the column.
 export const num = z.union([z.number(), z.string()]).transform(Number);
-export const chamber = z.enum(["senate", "house"]);
+export const chamber = z.enum(["senate", "house", "state_assembly"]);

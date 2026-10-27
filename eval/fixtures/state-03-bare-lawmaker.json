@@ -1,0 +1,21 @@
+{
+  "id": "state-03-bare-lawmaker",
+  "article": {
+    "title": "Lawmaker joins APC in Bauchi",
+    "outlet": "Example Times",
+    "url": "https://example.org/state-03-bare-lawmaker",
+    "published_at": "2026-06-02",
+    "tier": 1,
+    "text": "A lawmaker, Hon. Garba Liman-Fictional, on Monday joined the All Progressives Congress at a reception in Bauchi, after leaving the Peoples Democratic Party. \"I am now a member of the APC,\" Liman-Fictional said."
+  },
+  "expected": {
+    "classification": "CONFIRMED_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": null,
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

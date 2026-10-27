@@ -17,7 +17,7 @@ const SHORT_SUMMARY = 200;
 const BODY_PREFIX = 1500;
 
 const LEGISLATOR_CUE =
-  /senator|\bsen\.|senate|house of representatives|\breps?\b|\bhon\.|honourable|honorable|lawmaker|legislator|member representing|federal constituency|senatorial district|plenary|national assembly|\bnass\b|speaker|senate president/i;
+  /senator|\bsen\.|senate|house of representatives|\breps?\b|\bhon\.|honourable|honorable|lawmaker|legislator|member representing|federal constituency|senatorial district|plenary|national assembly|\bnass\b|speaker|senate president|house of assembly|state assembly|assembly member|state constituency/i;
 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 

@@ -58,7 +58,7 @@ export function buildEdits(original: ReviewFields, submitted: Partial<Record<key
 export function reviewErrorMessage(message: string | undefined): string {
   const m = (message ?? "").trim();
   if (/not authorised|permission denied|JWT/i.test(m)) return "Your session can't do this. Sign in again as an admin.";
-  if (/^(cannot publish|cannot merge|this event was already reviewed|a rejection reason|explain the rejection|nothing to change|unknown (destination )?party|unknown edit fields|legislator .* not found|an event cannot|target event|only published events|only the most recent|a correction note|no earlier affiliation)/i.test(m)) {
+  if (/^(cannot publish|cannot merge|this event was already reviewed|a rejection reason|explain the rejection|nothing to change|unknown (destination )?party|unknown edit fields|legislator .* not found|an event cannot|target event|only published events|only the most recent|a correction note|no earlier affiliation|this event is already linked|only state-assembly members|the member's name|a source url|term start|a sitting member already holds)/i.test(m)) {
     return m.charAt(0).toUpperCase() + m.slice(1);
   }
   return "Something went wrong. Nothing was changed.";

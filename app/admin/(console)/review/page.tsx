@@ -28,7 +28,9 @@ async function Queue() {
       {queue.length === 0 ? (
         <AdminEmpty>Nothing to review. New items appear here when the agent routes them to review.</AdminEmpty>
       ) : (
-        <ReviewOptions value={{ members, parties: reference.parties }}>
+        <ReviewOptions
+          value={{ members, parties: reference.parties, states: reference.states.map((s) => s.name).filter((s) => s !== "FCT") }}
+        >
           <p className="text-sm text-muted-foreground">
             {queue.length} item{queue.length === 1 ? "" : "s"} waiting
           </p>

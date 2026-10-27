@@ -1,4 +1,4 @@
-import type { Chamber } from "./filters";
+import type { AnyChamber } from "./filters";
 
 // Dates are calendar days (no time zone), so format them in UTC to avoid a
 // shift by one day.
@@ -17,9 +17,14 @@ export function formatSigned(n: number): string {
   return n > 0 ? `+${formatNumber(n)}` : formatNumber(n);
 }
 
-export const chamberLabel = (c: Chamber) => (c === "senate" ? "Senate" : "House of Representatives");
-export const chamberShort = (c: Chamber) => (c === "senate" ? "Senate" : "House");
-export const honorific = (c: Chamber) => (c === "senate" ? "Sen." : "Hon.");
+const CHAMBERS: Record<AnyChamber, { label: string; short: string; honorific: string }> = {
+  senate: { label: "Senate", short: "Senate", honorific: "Sen." },
+  house: { label: "House of Representatives", short: "House", honorific: "Hon." },
+  state_assembly: { label: "State House of Assembly", short: "Assembly", honorific: "Hon." },
+};
+export const chamberLabel = (c: AnyChamber) => CHAMBERS[c].label;
+export const chamberShort = (c: AnyChamber) => CHAMBERS[c].short;
+export const honorific = (c: AnyChamber) => CHAMBERS[c].honorific;
 
 /** Today in Nigeria (WAT, UTC+1), as YYYY-MM-DD. */
 export function todayInLagos(now: Date = new Date()): string {

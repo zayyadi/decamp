@@ -53,7 +53,7 @@ export type Plan =
       source: SourceEvidence;
     }
   | { kind: "subject"; classification: SubjectClass; extracted: ExtractedLegislator; match: MatchResult; toParty: string | null }
-  | { kind: "group_remainder"; count: number; chamber: "senate" | "house" | null; toParty: string | null }
+  | { kind: "group_remainder"; count: number; chamber: "senate" | "house" | "state_assembly" | null; toParty: string | null }
   | { kind: "dropped"; name: string; reason: string };
 
 const partyCode = (p: string | null) => (p === null || p === OTHER_PARTY ? null : p);

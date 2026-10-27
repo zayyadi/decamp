@@ -15,29 +15,42 @@ const CHAMBERS = [
   { value: "house", label: "House" },
 ] as const;
 
-export function OverviewFilters({ filters, reference }: { filters: Filters; reference: Reference }) {
+export function OverviewFilters({
+  filters,
+  reference,
+  chambers = true,
+}: {
+  filters: Filters;
+  reference: Reference;
+  /** The chamber pills; off where the page covers one chamber (state assemblies). */
+  chambers?: boolean;
+}) {
   const { go, pending } = useFilterNav(filters);
   const active = Boolean(filters.chamber || filters.party || filters.state || filters.from || filters.to || filters.week);
 
   return (
     <div className="flex flex-col gap-3 rounded-2xl border bg-muted p-3 lg:flex-row lg:items-end lg:justify-between">
-      <div role="radiogroup" aria-label="Chamber" className="flex w-fit items-center gap-1 rounded-full border border-accent bg-card p-1">
-        {CHAMBERS.map(({ value, label }) => (
-          <button
-            key={label}
-            type="button"
-            role="radio"
-            aria-checked={filters.chamber === value}
-            onClick={() => go({ chamber: value, week: undefined })}
-            className={cn(
-              "rounded-full px-4 whitespace-nowrap py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
-              "aria-checked:bg-primary aria-checked:text-primary-foreground",
-            )}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      {chambers ? (
+        <div role="radiogroup" aria-label="Chamber" className="flex w-fit items-center gap-1 rounded-full border border-accent bg-card p-1">
+          {CHAMBERS.map(({ value, label }) => (
+            <button
+              key={label}
+              type="button"
+              role="radio"
+              aria-checked={filters.chamber === value}
+              onClick={() => go({ chamber: value, week: undefined })}
+              className={cn(
+                "rounded-full px-4 whitespace-nowrap py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
+                "aria-checked:bg-primary aria-checked:text-primary-foreground",
+              )}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <span />
+      )}
 
       <div className="flex flex-wrap items-end gap-3">
         <label className="grid gap-1 text-xs font-medium text-muted-foreground">

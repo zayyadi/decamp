@@ -1,0 +1,15 @@
+{
+  "id": "state-05-assembly-rumour",
+  "article": {
+    "title": "Rivers Assembly members may join APC, sources say",
+    "outlet": "Example Times",
+    "url": "https://example.org/state-05-assembly-rumour",
+    "published_at": "2026-04-21",
+    "tier": 1,
+    "text": "Some members of the Rivers State House of Assembly are said to be in talks with leaders of the All Progressives Congress and may defect from the PDP in the coming weeks, according to sources close to the assembly. None of the lawmakers has confirmed the move."
+  },
+  "expected": {
+    "classification": "INTENT_OR_RUMOUR",
+    "legislators": []
+  }
+}

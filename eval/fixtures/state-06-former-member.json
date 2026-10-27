@@ -1,0 +1,15 @@
+{
+  "id": "state-06-former-member",
+  "article": {
+    "title": "Ex-Oyo Assembly member joins SDP",
+    "outlet": "Example Times",
+    "url": "https://example.org/state-06-former-member",
+    "published_at": "2026-09-03",
+    "tier": 1,
+    "text": "A former member of the Oyo State House of Assembly who represented Saki East-Fictional State Constituency between 2019 and 2023, Hon. Rafiu Adisa-Fictional, has joined the Social Democratic Party."
+  },
+  "expected": {
+    "classification": "FORMER_LEGISLATOR",
+    "legislators": []
+  }
+}

@@ -3,7 +3,7 @@
 import { ArrowRightIcon, ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { createContext, useActionState, useContext, useState, type ReactNode } from "react";
-import { approveEvent, mergeEvent, rejectEvent, saveEdits } from "@/app/admin/actions";
+import { addAssemblyMember, approveEvent, mergeEvent, rejectEvent, saveEdits } from "@/app/admin/actions";
 import { FictionalBadge, PartyBadge } from "@/components/badges";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,10 +16,12 @@ import { ActionMessage } from "./action-message";
 interface Options {
   members: MemberOption[];
   parties: { code: string; name: string }[];
+  /** States with a House of Assembly (not the FCT). */
+  states: string[];
 }
 
 // Sent once for the whole queue rather than with every card.
-const OptionsContext = createContext<Options>({ members: [], parties: [] });
+const OptionsContext = createContext<Options>({ members: [], parties: [], states: [] });
 
 export function ReviewOptions({ value, children }: { value: Options; children: ReactNode }) {
   return <OptionsContext value={value}>{children}</OptionsContext>;
@@ -128,6 +130,68 @@ function DecisionForm({ item }: { item: QueueItem }) {
         </Button>
       </div>
       <p className="text-xs text-muted-foreground">Publishing changes party counts and sends a Confirmed alert to everyone.</p>
+    </form>
+  );
+}
+
+/**
+ * For a state-assembly report naming someone not yet on record: the editor
+ * identifies the member from a source; approval then works as for anyone else.
+ */
+function AddMemberForm({ item }: { item: QueueItem }) {
+  const { parties, states } = useContext(OptionsContext);
+  const [state, action, pending] = useActionState(addAssemblyMember, null);
+  const name = item.raw_name.replace(/^(rt\.?\s+)?hon(ourable)?\.?\s+/i, "");
+  return (
+    <form action={action} className="space-y-3 rounded-xl border border-unverified-border bg-unverified/40 p-3" aria-busy={pending}>
+      <input type="hidden" name="event_id" value={item.id} />
+      <p className="text-sm font-semibold">This state-assembly member isn&apos;t on record yet</p>
+      <p className="text-xs text-muted-foreground">
+        Add them from a source that identifies them (the assembly&apos;s website, INEC results or a report naming their
+        constituency). Their party before this defection becomes their current party.
+      </p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Label text="Full name (no title)">
+          <Input name="full_name" defaultValue={name} required className="bg-card" />
+        </Label>
+        <Label text="State">
+          <NativeSelect name="state" defaultValue={item.state ?? ""} required className="w-full">
+            <NativeSelectOption value="" disabled>
+              Choose…
+            </NativeSelectOption>
+            {states.map((s) => (
+              <NativeSelectOption key={s} value={s}>
+                {s}
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+        </Label>
+        <Label text="State constituency">
+          <Input name="constituency" required className="bg-card" />
+        </Label>
+        <Label text="Elected on (2023)">
+          <NativeSelect name="elected_party" defaultValue={item.from_party?.code ?? ""} required className="w-full">
+            <NativeSelectOption value="" disabled>
+              Choose…
+            </NativeSelectOption>
+            {parties.map((p) => (
+              <NativeSelectOption key={p.code} value={p.code}>
+                {p.code} · {p.name}
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+        </Label>
+        <Label text="Sworn in">
+          <Input type="date" name="term_start" min="2023-06-01" required className="bg-card" />
+        </Label>
+        <Label text="Source identifying the member (https)">
+          <Input type="url" name="source_url" required placeholder="https://" className="bg-card" />
+        </Label>
+      </div>
+      <ActionMessage state={state} />
+      <Button type="submit" variant="outline" disabled={pending}>
+        Add member and link
+      </Button>
     </form>
   );
 }
@@ -276,6 +340,7 @@ export function ReviewCard({ item, targets }: { item: QueueItem; targets: MergeT
       </div>
 
       <div className="space-y-4 rounded-xl bg-muted p-4">
+        {!item.legislator && item.chamber === "state_assembly" ? <AddMemberForm item={item} /> : null}
         <DecisionForm item={item} />
         <details className="group border-t pt-3">
           <summary className="cursor-pointer text-sm font-semibold text-muted-foreground hover:text-foreground">Reject…</summary>

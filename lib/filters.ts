@@ -3,6 +3,8 @@
 
 export type SearchParams = Record<string, string | string[] | undefined>;
 export type Chamber = "senate" | "house";
+/** Any chamber a member can sit in; the URL filters above stay federal. */
+export type AnyChamber = Chamber | "state_assembly";
 
 export interface Filters {
   chamber?: Chamber;

@@ -4,7 +4,7 @@ const date = z.iso.date();
 const party = z.string().regex(/^[A-Z]{1,8}$/);
 export const historicalEventSchema = z.object({
   full_name: z.string().trim().min(2),
-  chamber: z.enum(["senate", "house"]),
+  chamber: z.enum(["senate", "house", "state_assembly"]),
   state: z.string().min(2),
   constituency: z.string().min(2),
   elected_party: party,
@@ -38,7 +38,9 @@ export function parseHistoricalEvents(input: unknown, today: string): Historical
     const key = historicalKey(e);
     if (keys.has(key)) throw new Error(`Duplicate historical event: ${e.full_name} ${e.event_date}`);
     keys.add(key);
-    if (e.event_date < e.term_start || e.term_start < "2023-06-13" || e.event_date > today || e.verified_at > today ||
+    // State assemblies were inaugurated on different days in early June 2023.
+    const termFloor = e.chamber === "state_assembly" ? "2023-06-01" : "2023-06-13";
+    if (e.event_date < e.term_start || e.term_start < termFloor || e.event_date > today || e.verified_at > today ||
       (e.announced_date && (e.announced_date < e.event_date || e.announced_date > today)) ||
       (e.left_office_on && e.left_office_on > today)) {
       throw new Error(`Historical date outside the verified term: ${e.full_name}`);

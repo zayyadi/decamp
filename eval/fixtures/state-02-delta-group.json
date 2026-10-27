@@ -1,0 +1,26 @@
+{
+  "id": "state-02-delta-group",
+  "article": {
+    "title": "Five Delta Assembly members defect to APC",
+    "outlet": "Example Times",
+    "url": "https://example.org/state-02-delta-group",
+    "published_at": "2026-05-14",
+    "tier": 1,
+    "text": "Five members of the Delta State House of Assembly on Wednesday defected from the Peoples Democratic Party to the All Progressives Congress. They include Hon. Ejiro Okoro-Fictional, representing Ughelli North I-Fictional State Constituency, and Hon. Tobore Ese-Fictional, representing Sapele-Fictional State Constituency. The Speaker announced their defection at plenary. \"We have formally joined the APC,\" Okoro-Fictional told journalists afterwards."
+  },
+  "expected": {
+    "classification": "GROUP_DEFECTION",
+    "legislators": [
+      {
+        "roster_id": null,
+        "from": "PDP",
+        "to": "APC"
+      },
+      {
+        "roster_id": null,
+        "from": "PDP",
+        "to": "APC"
+      }
+    ]
+  }
+}

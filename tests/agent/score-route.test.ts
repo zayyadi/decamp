@@ -101,11 +101,17 @@ describe("hardGates", () => {
     [{ flags: ["unresolved_entity"] }, "unresolved_entity"],
     [{ flags: ["party_mismatch"] }, "party_mismatch"],
     [{ flags: ["denied"] }, "denied"],
+    [{ flags: ["state_assembly"] }, "state_assembly"],
     [{ anyQuoteVerbatim: false }, "quote_not_verbatim"],
     [{ toParty: null }, "to_party_missing"],
     [{ speculative: true }, "speculative_language"],
   ])("%j fires %s", (over, gate) => {
     expect(hardGates({ ...base, ...over })).toEqual([gate]);
+  });
+
+  it("sends state-assembly events to review even at full score (phase 1)", () => {
+    const gates = hardGates({ ...base, flags: ["state_assembly"], isPlenary: true });
+    expect(routeEvent({ score: 0.99, gates, entityUnique: true }, { publish: 0.85, review: 0.6 }).status).toBe("in_review");
   });
 
   it("lets a plenary announcement through despite speculative language", () => {

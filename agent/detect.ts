@@ -52,7 +52,7 @@ export interface NewEvent {
   is_return: boolean;
   event_date: string | null;
   announced_date: string;
-  chamber: "senate" | "house" | null;
+  chamber: "senate" | "house" | "state_assembly" | null;
   state: string | null;
   reason_given: string | null;
   confidence: number;
@@ -242,8 +242,9 @@ async function handleEvent(
     event_date: plan.extracted.event_date,
     announced_date: (article.publishedAt ?? deps.today).slice(0, 10),
     chamber: legislator?.chamber ?? (plan.extracted.chamber === "unknown" ? null : plan.extracted.chamber),
-    // `state` references ng_states, so only a roster value is safe to store.
-    state: legislator?.state ?? null,
+    // `state` references ng_states, so store only a spelling the roster uses
+    // (it covers every state). An unmatched assembly member needs it for review.
+    state: legislator?.state ?? (deps.roster.some((r) => r.state === plan.extracted.state) ? plan.extracted.state : null),
     reason_given: plan.extracted.reason_given,
     confidence: breakdown.score,
     score_breakdown: { ...breakdown, entity, sources: [plan.source] },
@@ -319,7 +320,8 @@ async function handleGroupRemainder(
   namedFictional: boolean,
   result: DetectResult,
 ): Promise<string> {
-  const chamberWord = plan.chamber === "senate" ? "Senate" : plan.chamber === "house" ? "House" : "National Assembly";
+  const chamberWord =
+    plan.chamber === "senate" ? "Senate" : plan.chamber === "house" ? "House" : plan.chamber === "state_assembly" ? "State Assembly" : "National Assembly";
   const quote = output.legislators[0]?.evidence_quote ?? output.reasoning_summary.slice(0, 300);
   const { created, id } = await deps.store.insertEvent({
     dedupe_key: `${article.id}:group-remainder`,

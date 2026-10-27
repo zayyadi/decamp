@@ -12,6 +12,8 @@ const queueRows = z.array(
   z.object({
     id: z.string(),
     raw_name: z.string(),
+    chamber: chamber.nullable(),
+    state: z.string().nullable(),
     event_type: z.string(),
     is_return: z.boolean(),
     event_date: z.string().nullable(),
@@ -53,7 +55,7 @@ export async function getReviewQueue(): Promise<QueueItem[]> {
   const result = await db
     .from("defection_events")
     .select(
-      "id, raw_name, event_type, is_return, event_date, announced_date, confidence, score_breakdown, review_flags, review_note, " +
+      "id, raw_name, chamber, state, event_type, is_return, event_date, announced_date, confidence, score_breakdown, review_flags, review_note, " +
         "evidence_quote, reasoning_summary, model, prompt_version, created_at, " +
         "legislator:legislators(id, full_name, chamber, state, constituency, is_fictional, current_party:parties!legislators_current_party_id_fkey(code)), " +
         "from_party:parties!defection_events_from_party_id_fkey(code, name, color), " +

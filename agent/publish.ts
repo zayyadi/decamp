@@ -24,7 +24,7 @@ const legislatorRows = z.array(
     id: z.string(),
     full_name: z.string(),
     name_variants: z.array(z.string()),
-    chamber: z.enum(["senate", "house"]),
+    chamber: z.enum(["senate", "house", "state_assembly"]),
     state: z.string(),
     constituency: z.string(),
     status: z.string(),

@@ -100,6 +100,45 @@ export async function mergeEvent(_prev: ActionState, form: FormData): Promise<Ac
   );
 }
 
+export async function addAssemblyMember(_prev: ActionState, form: FormData): Promise<ActionState> {
+  const parsed = z
+    .object({
+      id: uuid,
+      name: z.string().trim().min(2).max(200),
+      state: z.string().trim().min(2),
+      constituency: z.string().trim().min(2).max(200),
+      elected: z.string().regex(/^[A-Z]{1,8}$/),
+      start: z.iso.date(),
+      source: z.url({ protocol: /^https$/ }),
+    })
+    .safeParse({
+      id: field(form, "event_id"),
+      name: field(form, "full_name"),
+      state: field(form, "state"),
+      constituency: field(form, "constituency"),
+      elected: field(form, "elected_party"),
+      start: field(form, "term_start"),
+      source: field(form, "source_url")?.trim(),
+    });
+  if (!parsed.success) {
+    return { ok: false, message: "Fill in the name, state, state constituency, elected party, term start and an https source link." };
+  }
+  const d = parsed.data;
+  return run(
+    "review_add_member",
+    {
+      p_event_id: d.id,
+      p_full_name: d.name,
+      p_state: d.state,
+      p_constituency: d.constituency,
+      p_elected_party: d.elected,
+      p_term_start: d.start,
+      p_source_url: d.source,
+    },
+    "Member added and linked. Check the details, then approve.",
+  );
+}
+
 export async function reverseEvent(_prev: ActionState, form: FormData): Promise<ActionState> {
   const parsed = z
     .object({ id: uuid, note: z.string().trim().min(10).max(1000) })

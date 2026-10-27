@@ -1,10 +1,13 @@
 import "server-only";
 import { z } from "zod";
-import type { Chamber, Filters } from "@/lib/filters";
+import type { AnyChamber, Chamber, Filters } from "@/lib/filters";
 import { createAnonClient } from "@/lib/supabase/server";
 import { chamber, num, parseRows } from "./shared";
 
-const filterArgs = (f: Filters) => ({
+/** Dashboard filters for any chamber; no chamber means the National Assembly (dashboard_events). */
+export type ScopedFilters = Omit<Filters, "chamber"> & { chamber?: AnyChamber };
+
+const filterArgs = (f: ScopedFilters) => ({
   p_chamber: f.chamber ?? null,
   p_party: f.party ?? null,
   p_state: f.state ?? null,
@@ -24,7 +27,7 @@ const kpiRow = z.array(
 );
 export type Kpis = z.infer<typeof kpiRow>[number];
 
-export async function getKpis(f: Filters): Promise<Kpis> {
+export async function getKpis(f: ScopedFilters): Promise<Kpis> {
   const db = await createAnonClient();
   const [row] = parseRows(kpiRow, await db.rpc("defection_kpis", filterArgs(f)), "defection_kpis");
   return row;
@@ -33,7 +36,7 @@ export async function getKpis(f: Filters): Promise<Kpis> {
 const flowRows = z.array(z.object({ from_code: z.string(), to_code: z.string(), defections: num }));
 export type Flow = z.infer<typeof flowRows>[number];
 
-export async function getFlows(f: Filters): Promise<Flow[]> {
+export async function getFlows(f: ScopedFilters): Promise<Flow[]> {
   const db = await createAnonClient();
   return parseRows(flowRows, await db.rpc("party_flows", filterArgs(f)), "party_flows");
 }
@@ -43,7 +46,7 @@ const stateRows = z.array(
 );
 export type StateCount = z.infer<typeof stateRows>[number];
 
-export async function getByState(f: Filters): Promise<StateCount[]> {
+export async function getByState(f: ScopedFilters): Promise<StateCount[]> {
   const db = await createAnonClient();
   return parseRows(stateRows, await db.rpc("defections_by_state", filterArgs(f)), "defections_by_state");
 }
@@ -51,7 +54,7 @@ export async function getByState(f: Filters): Promise<StateCount[]> {
 const weekRows = z.array(z.object({ week_start: z.string(), defections: num }));
 export type WeekCount = z.infer<typeof weekRows>[number];
 
-export async function getByWeek(f: Filters): Promise<WeekCount[]> {
+export async function getByWeek(f: ScopedFilters): Promise<WeekCount[]> {
   const db = await createAnonClient();
   return parseRows(weekRows, await db.rpc("defections_by_week", filterArgs(f)), "defections_by_week");
 }
@@ -80,7 +83,7 @@ const eventRows = z.array(
 );
 export type DashboardEvent = z.infer<typeof eventRows>[number];
 
-export async function getEvents(f: Filters, limit = 50): Promise<DashboardEvent[]> {
+export async function getEvents(f: ScopedFilters, limit = 50): Promise<DashboardEvent[]> {
   const db = await createAnonClient();
   const result = await db
     .rpc("dashboard_events", filterArgs(f))
