@@ -8,7 +8,8 @@ export async function seedHistorical(file: string, dryRun: boolean): Promise<voi
   const events = parseHistoricalEvents(JSON.parse(readFileSync(file, "utf8")), today);
   const rows = events.map((e) => ({ ...e, dedupe_key: historicalKey(e) }));
   console.log(`${rows.length} sourced historical defections: ${events[0].event_date} to ${events.at(-1)?.event_date}`);
-  console.log(`Senate: ${events.filter((e) => e.chamber === "senate").length}; House: ${events.filter((e) => e.chamber === "house").length}`);
+  const count = (chamber: string) => events.filter((e) => e.chamber === chamber).length;
+  console.log(`Senate: ${count("senate")}; House: ${count("house")}; State assemblies: ${count("state_assembly")}`);
   console.log("Partial historical backfill; party totals cover seeded members only. See docs/HISTORICAL_DATA.md.");
   if (dryRun) return;
   loadLocalEnv();
