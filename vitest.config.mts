@@ -11,5 +11,8 @@ export default defineConfig({
     // Each tests/db file holds an in-memory Postgres (PGlite); one worker per
     // core runs out of memory on an 8 GB machine.
     maxWorkers: 4,
+    // The first hook in each tests/db file applies every migration and seeds
+    // the roster, which takes longer than the 10 s default on slower machines.
+    hookTimeout: 60_000,
   },
 });
