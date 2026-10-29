@@ -54,6 +54,18 @@ Official Votes and Proceedings scans, printed by National Assembly Press and arc
 
 Short excerpts are deliberately limited to keep quotations from each source small, including sources shared by several members. Some snippets establish the announcement rather than repeating every structured detail: the linked document supplies the names, parties and constituencies. They are quotations from the reporting or proceedings, not necessarily direct words spoken by the member.
 
+## State Houses of Assembly
+
+[state-assembly.historical.json](../supabase/seed/state-assembly.historical.json) holds **85 researched defections by members of 19 state assemblies** (16 November 2023 to 29 August 2026; Kano 20, Rivers 16, Ogun 8 and others). It uses the same row format, except that `term_start` may be from 1 June 2023 because assemblies were inaugurated on different days. Coverage is partial in the same way as the federal file.
+
+These records are **not published on import**. Without a sourced assembly roster, every state-assembly defection goes through review (SPEC §3.1), so `npm run seed:assemblies` drafts them into the review queue's *State-assembly backfill* section through the service-only `draft_historical_events`:
+
+1. The import creates each event as `in_review` with its source, and stores the researched member details for the editor (never public).
+2. The editor checks the source, adds the member (the form is pre-filled), then approves. The alert is dated to the event and does not appear as breaking news.
+3. Rerun `npm run seed:assemblies` after approvals. It skips existing drafts, links a member's later events to the member just added (one member, Mohammed Garba Isimbabi, has two), and records departures: three members left office (two in Kwara, one in Delta) after their recorded defections.
+
+A file must hold either federal or state-assembly rows: `seed:historical` refuses a mix, and sends state-assembly files to the review queue.
+
 ## Remaining verification and backfill
 
 1. Systematically review both chambers' Votes and Proceedings from June 2023 through the research cutoff; the selected-source search performed here is not a completeness audit.

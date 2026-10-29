@@ -96,3 +96,5 @@ npm run seed -- --demo-events
 ```
 
 The import runs in one transaction, publishes through `publish_defection`, preserves repeat moves and source links, dates alerts historically, and hides fictional data. Re-running skips existing events. The dashboard banner explains that party totals cover recorded members only. Synthetic development events remain available with `npm run seed -- --fictional-events`.
+
+State-assembly records are drafted into the review queue instead of being published: run `npm run seed:assemblies` (add `-- --dry-run` to validate), then review them under *State-assembly backfill* at `/admin/review`. Rerun it after approvals to link follow-up events and record departures. See [the notes](docs/HISTORICAL_DATA.md#state-houses-of-assembly).

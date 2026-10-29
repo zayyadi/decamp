@@ -34,6 +34,7 @@ const FLAG_LABELS: Record<string, string> = {
   quote_not_verbatim: "Quote not verbatim",
   unnamed_group_remainder: "Unnamed group members",
   single_low_tier_source: "Single low-tier source",
+  historical_backfill: "Researched backfill",
 };
 
 function Label({ text, children }: { text: string; children: ReactNode }) {
@@ -141,7 +142,8 @@ function DecisionForm({ item }: { item: QueueItem }) {
 function AddMemberForm({ item }: { item: QueueItem }) {
   const { parties, states } = useContext(OptionsContext);
   const [state, action, pending] = useActionState(addAssemblyMember, null);
-  const name = item.raw_name.replace(/^(rt\.?\s+)?hon(ourable)?\.?\s+/i, "");
+  const proposed = item.proposed_member;
+  const name = proposed?.full_name ?? item.raw_name.replace(/^(rt\.?\s+)?hon(ourable)?\.?\s+/i, "");
   return (
     <form action={action} className="space-y-3 rounded-xl border border-unverified-border bg-unverified/40 p-3" aria-busy={pending}>
       <input type="hidden" name="event_id" value={item.id} />
@@ -149,6 +151,7 @@ function AddMemberForm({ item }: { item: QueueItem }) {
       <p className="text-xs text-muted-foreground">
         Add them from a source that identifies them (the assembly&apos;s website, INEC results or a report naming their
         constituency). Their party before this defection becomes their current party.
+        {proposed ? " The fields are pre-filled from the researched record: check them against the source." : null}
       </p>
       <div className="grid gap-3 sm:grid-cols-2">
         <Label text="Full name (no title)">
@@ -167,10 +170,10 @@ function AddMemberForm({ item }: { item: QueueItem }) {
           </NativeSelect>
         </Label>
         <Label text="State constituency">
-          <Input name="constituency" required className="bg-card" />
+          <Input name="constituency" defaultValue={proposed?.constituency} required className="bg-card" />
         </Label>
         <Label text="Elected on (2023)">
-          <NativeSelect name="elected_party" defaultValue={item.from_party?.code ?? ""} required className="w-full">
+          <NativeSelect name="elected_party" defaultValue={proposed?.elected_party ?? item.from_party?.code ?? ""} required className="w-full">
             <NativeSelectOption value="" disabled>
               Choose…
             </NativeSelectOption>
@@ -182,10 +185,10 @@ function AddMemberForm({ item }: { item: QueueItem }) {
           </NativeSelect>
         </Label>
         <Label text="Sworn in">
-          <Input type="date" name="term_start" min="2023-06-01" required className="bg-card" />
+          <Input type="date" name="term_start" min="2023-06-01" defaultValue={proposed?.term_start} required className="bg-card" />
         </Label>
         <Label text="Source identifying the member (https)">
-          <Input type="url" name="source_url" required placeholder="https://" className="bg-card" />
+          <Input type="url" name="source_url" defaultValue={proposed?.source_url} required placeholder="https://" className="bg-card" />
         </Label>
       </div>
       <ActionMessage state={state} />
@@ -260,20 +263,27 @@ function MergeForm({ item, targets }: { item: QueueItem; targets: MergeTarget[] 
 
 export function ReviewCard({ item, targets }: { item: QueueItem; targets: MergeTarget[] }) {
   const l = item.legislator;
+  // A researched record has no model score: its 1.0 is not a confidence estimate.
+  const backfill = item.review_flags.includes("historical_backfill");
+  const left = item.proposed_member?.left_office_on ? item.proposed_member : null;
   return (
     <article className="grid gap-5 rounded-2xl border bg-card p-5 lg:grid-cols-[3fr_2fr]">
       <div className="min-w-0 space-y-4">
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="rounded-full bg-accent px-2 py-0.5 font-semibold text-accent-foreground">
-            Score {formatConfidence(item.confidence)}
-          </span>
+          {backfill ? null : (
+            <span className="rounded-full bg-accent px-2 py-0.5 font-semibold text-accent-foreground">
+              Score {formatConfidence(item.confidence)}
+            </span>
+          )}
           {item.review_flags.map((f) => (
             <span key={f} className="rounded-full border border-unverified-border bg-unverified px-2 py-0.5 font-medium text-unverified-foreground">
               {FLAG_LABELS[f] ?? f}
             </span>
           ))}
           {l?.is_fictional ? <FictionalBadge /> : null}
-          <span className="ml-auto text-muted-foreground">Detected {formatDate(item.created_at)}</span>
+          <span className="ml-auto text-muted-foreground">
+            {backfill ? "Drafted" : "Detected"} {formatDate(item.created_at)}
+          </span>
         </div>
 
         <div className="space-y-1">
@@ -299,6 +309,13 @@ export function ReviewCard({ item, targets }: { item: QueueItem; targets: MergeT
           <span className="text-muted-foreground">· {item.event_date ? formatDate(item.event_date) : "date unknown"}</span>
           {item.is_return ? <span className="text-muted-foreground">· return to a former party</span> : null}
         </div>
+
+        {left ? (
+          <p className="rounded-lg border border-unverified-border bg-unverified px-3 py-2 text-sm text-unverified-foreground">
+            The record says this member left office ({left.status}) on {formatDate(left.left_office_on)}. Approve the
+            defection first; rerunning <code>npm run seed:assemblies</code> then records the departure.
+          </p>
+        ) : null}
 
         {item.review_note ? (
           <p className="rounded-lg border border-unverified-border bg-unverified px-3 py-2 text-sm text-unverified-foreground">{item.review_note}</p>

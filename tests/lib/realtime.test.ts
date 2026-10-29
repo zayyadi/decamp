@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { relativeTime } from "@/lib/format";
-import { alertHref, mergeAlerts, parseAlert, type LiveAlert } from "@/lib/realtime";
+import { alertHref, isFresh, mergeAlerts, parseAlert, type LiveAlert } from "@/lib/realtime";
 
 const alert = (id: number, created_at: string, over: Partial<LiveAlert> = {}): LiveAlert => ({
   id,
@@ -60,5 +60,16 @@ describe("relativeTime", () => {
 
   it("never shows a live arrival as in the future", () => {
     expect(relativeTime("2026-10-25T12:00:40Z", now)).toBe("just now");
+  });
+});
+
+describe("isFresh", () => {
+  const now = Date.parse("2026-10-29T12:00:00Z");
+  it("toasts alerts from the last day only", () => {
+    expect(isFresh(alert(1, "2026-10-29T11:59:00Z"), now)).toBe(true);
+    expect(isFresh(alert(2, "2026-10-28T12:00:00Z"), now)).toBe(true);
+  });
+  it("skips a backfilled alert dated to its historical event", () => {
+    expect(isFresh(alert(3, "2024-03-05T00:00:00+00:00"), now)).toBe(false);
   });
 });

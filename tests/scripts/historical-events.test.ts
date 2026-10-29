@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseHistoricalEvents } from "@/scripts/lib/historical-events";
+import { importTarget, parseHistoricalEvents } from "@/scripts/lib/historical-events";
 
 const row = {
   full_name: "Test Member", chamber: "house", state: "Abia", constituency: "Test Seat",
@@ -12,5 +12,17 @@ describe("historical validation", () => {
     expect(() => parseHistoricalEvents([row, row], "2026-10-25")).toThrow(/Duplicate/);
     expect(() => parseHistoricalEvents([{ ...row, event_date: "2027-01-01" }], "2026-10-25")).toThrow(/date outside/);
     expect(() => parseHistoricalEvents([row, { ...row, event_date: "2025-01-01", from_party: "LP", to_party: "ADC" }], "2026-10-25")).toThrow(/party history/);
+  });
+});
+
+describe("import target", () => {
+  const federal = parseHistoricalEvents([row], "2026-10-25");
+  const assembly = parseHistoricalEvents([{ ...row, chamber: "state_assembly", constituency: "Test Ward" }], "2026-10-25");
+  it("publishes federal files and drafts state-assembly files for review", () => {
+    expect(importTarget(federal)).toBe("seed_historical_events");
+    expect(importTarget(assembly)).toBe("draft_historical_events");
+  });
+  it("refuses a file that mixes them", () => {
+    expect(() => importTarget([...federal, ...assembly])).toThrow(/their own file/);
   });
 });

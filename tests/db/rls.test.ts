@@ -90,6 +90,9 @@ describe("with demo mode on", () => {
     await expect(asAnon("select reviewed_by from defection_events")).rejects.toThrow(
       /permission denied/,
     );
+    await expect(asAnon("select proposed_member from defection_events")).rejects.toThrow(
+      /permission denied/,
+    );
   });
 
   it("admins see every event; ordinary users see published ones", async () => {

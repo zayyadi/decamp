@@ -27,6 +27,18 @@ const queueRows = z.array(
     model: z.string().nullable(),
     prompt_version: z.string().nullable(),
     created_at: z.string(),
+    // Researched details of a backfilled state-assembly member, to pre-fill "add member".
+    proposed_member: z
+      .object({
+        full_name: z.string(),
+        constituency: z.string(),
+        elected_party: z.string(),
+        term_start: z.string(),
+        source_url: z.string(),
+        status: z.string(),
+        left_office_on: z.string().nullable(),
+      })
+      .nullable(),
     legislator: z
       .object({
         id: z.string(),
@@ -50,23 +62,43 @@ const queueRows = z.array(
 );
 export type QueueItem = z.infer<typeof queueRows>[number];
 
+const queueColumns =
+  "id, raw_name, chamber, state, event_type, is_return, event_date, announced_date, confidence, score_breakdown, review_flags, review_note, " +
+  "evidence_quote, reasoning_summary, model, prompt_version, created_at, proposed_member, " +
+  "legislator:legislators(id, full_name, chamber, state, constituency, is_fictional, current_party:parties!legislators_current_party_id_fkey(code)), " +
+  "from_party:parties!defection_events_from_party_id_fkey(code, name, color), " +
+  "to_party:parties!defection_events_to_party_id_fkey(code, name, color), " +
+  "sources:event_sources(evidence_quote, article:articles(id, url, outlet, title, published_at))";
+
+/** Model name of researched backfill records (see draft_historical_events). */
+export const BACKFILL_MODEL = "historical-import";
+
+/** What the agent routed to review, highest score first. Backfill drafts are kept apart so they can't crowd it out. */
 export async function getReviewQueue(): Promise<QueueItem[]> {
   const db = await createClient();
   const result = await db
     .from("defection_events")
-    .select(
-      "id, raw_name, chamber, state, event_type, is_return, event_date, announced_date, confidence, score_breakdown, review_flags, review_note, " +
-        "evidence_quote, reasoning_summary, model, prompt_version, created_at, " +
-        "legislator:legislators(id, full_name, chamber, state, constituency, is_fictional, current_party:parties!legislators_current_party_id_fkey(code)), " +
-        "from_party:parties!defection_events_from_party_id_fkey(code, name, color), " +
-        "to_party:parties!defection_events_to_party_id_fkey(code, name, color), " +
-        "sources:event_sources(evidence_quote, article:articles(id, url, outlet, title, published_at))",
-    )
+    .select(queueColumns)
     .in("status", ["detected", "in_review"])
+    .or(`model.is.null,model.neq.${BACKFILL_MODEL}`)
     .order("confidence", { ascending: false })
     .order("created_at", { ascending: false })
     .limit(100);
   return parseRows(queueRows, result, "review queue");
+}
+
+/** Researched state-assembly records awaiting review, oldest first so a member's moves are approved in order. */
+export async function getBackfillQueue(): Promise<QueueItem[]> {
+  const db = await createClient();
+  const result = await db
+    .from("defection_events")
+    .select(queueColumns)
+    .in("status", ["detected", "in_review"])
+    .eq("model", BACKFILL_MODEL)
+    .order("event_date", { ascending: true })
+    .order("created_at", { ascending: true })
+    .limit(100);
+  return parseRows(queueRows, result, "backfill queue");
 }
 
 const memberRows = z.array(

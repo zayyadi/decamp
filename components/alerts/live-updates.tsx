@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { StatusBadge } from "@/components/badges";
-import { alertHref, mergeAlerts, parseAlert, type LiveAlert } from "@/lib/realtime";
+import { alertHref, isFresh, mergeAlerts, parseAlert, type LiveAlert } from "@/lib/realtime";
 import { getBrowserClient } from "@/lib/supabase/browser";
 
 export type LiveStatus = "connecting" | "live" | "offline";
@@ -69,11 +69,12 @@ export function LiveUpdates({ children }: { children: ReactNode }) {
         const alert = parseAlert(payload.new);
         if (!alert) return;
         setAlerts((prev) => mergeAlerts(prev, [alert]));
+        scheduleRefresh();
+        if (!isFresh(alert, Date.now())) return;
         toast.custom((id) => <AlertToast alert={alert} onClose={() => toast.dismiss(id)} />, {
           id: `alert-${alert.id}`,
           duration: alert.level === "confirmed" ? 10_000 : 8_000,
         });
-        scheduleRefresh();
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "defection_events" }, scheduleRefresh)
       // TIMED_OUT is retried by the client, so it still counts as connecting.

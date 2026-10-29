@@ -28,6 +28,18 @@ export function historicalKey(e: HistoricalEvent): string {
   return `historical:${[e.chamber, e.state, e.constituency, e.full_name, e.event_date, e.from_party, e.to_party].map(encodeURIComponent).join(":")}`;
 }
 
+/**
+ * Federal records are published directly; state-assembly records are drafted
+ * into the review queue (the state_assembly hard gate), so a file holds one or
+ * the other and can never publish assembly records by accident.
+ */
+export function importTarget(events: HistoricalEvent[]): "seed_historical_events" | "draft_historical_events" {
+  const assembly = events.filter((e) => e.chamber === "state_assembly").length;
+  if (assembly === 0) return "seed_historical_events";
+  if (assembly === events.length) return "draft_historical_events";
+  throw new Error("Keep state-assembly records in their own file: they are drafted for review, not published.");
+}
+
 /** Validate the entire backfill before opening a database connection. */
 export function parseHistoricalEvents(input: unknown, today: string): HistoricalEvent[] {
   const events = z.array(historicalEventSchema).min(1).parse(input)

@@ -4,6 +4,7 @@
 |---|---|
 | `legislators.fictional.csv` | Demo roster. **All names are fictional**; constituencies are labelled "Demo" and sources point at `example.org`. Load with `--fictional`. |
 | `legislators.template.csv` | Header for the real roster. Fill it from official sources (SPEC.md §9) and have a second person verify it before loading. |
+| `state-assembly.historical.json` | Sourced state-assembly defections since June 2023, drafted into review by `npm run seed:assemblies` (not published on import). |
 | `defections.historical.json` | Sourced historical Senate and House defections since June 2023. Real records; partial coverage documented in `docs/HISTORICAL_DATA.md`. |
 
 States (`ng_states`) and parties (`parties`) are reference data in `supabase/migrations/`, not seed files.

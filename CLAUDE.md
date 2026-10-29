@@ -70,6 +70,7 @@ npm run seed -- --demo-mode on|off  # show/hide fictional rows (app_settings.dem
 npm run seed -- --demo-events [--dry-run]   # sourced historical Senate + House backfill; hides fictional records
 npm run seed -- --fictional-events [--dry-run]   # synthetic development events only
 npm run seed:historical -- [--dry-run]   # same historical import, optional --file <json>
+npm run seed:assemblies -- [--dry-run]   # draft the state-assembly backfill into review; rerun after approvals
 npm run build-map -- <geoBoundaries-NGA-ADM1_simplified.geojson>   # rebuild public/maps/ng-states.topo.json
 npm run admin -- --grant <email> | --revoke <email> | --list    # admin role (app_metadata.role); create the user in the dashboard first
 sudo bash deploy/release.sh <ref> | --rollback   # on the VPS, after deploy/bootstrap.sh (docs/VPS.md)

@@ -28,6 +28,16 @@ export function mergeAlerts(server: LiveAlert[], live: LiveAlert[], limit = 20):
     .slice(0, limit);
 }
 
+const TOAST_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Whether a new alert is news. An approved backfill record arrives dated to
+ * its historical event, so it joins the feed without a breaking-news toast.
+ */
+export function isFresh(a: Pick<LiveAlert, "created_at">, now: number): boolean {
+  return now - Date.parse(a.created_at) <= TOAST_MAX_AGE_MS;
+}
+
 /**
  * Where an alert leads. Only confirmed events are public; unverified ones and
  * group alerts point at the feed instead of a page the visitor can't open.
